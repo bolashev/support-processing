@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'bitrix_sso' => [
+        'secret' => env('BITRIX_SSO_SECRET'),
+        'gateway_url' => env('BITRIX_PORTAL_URL', 'https://dev-0.portal.trapeza.ru') . '/sso/gateway.php',
+    ],
+
 ];
