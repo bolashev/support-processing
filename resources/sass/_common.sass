@@ -1,0 +1,30 @@
+@use 'variables' as *
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap')
+
+*
+    box-sizing: border-box
+
+body
+    margin: 0
+    font-family: $f-roboto
+    background: $c-bg
+    color: $c-text
+    -webkit-font-smoothing: antialiased
+
+html, body
+    height: 100%
+
+a
+    text-decoration: none
+    color: inherit
+
+.page-root
+    width: $page-w
+    max-width: 100%
+    min-height: 100vh
+    background: $c-bg
+    margin: 0 auto
+    font-family: $f-roboto
+    display: flex
+    flex-direction: column

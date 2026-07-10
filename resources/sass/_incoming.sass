@@ -1,0 +1,429 @@
+@use 'variables' as *
+
+// ===== Nav Card Filter =====
+
+.nav-card-filter
+    width: $content-w
+    padding: 16px
+    background: $c-white
+    border-bottom-right-radius: 8px
+    border-bottom-left-radius: 8px
+    justify-content: space-between
+    align-items: center
+    display: inline-flex
+
+.filter-row
+    justify-content: flex-start
+    align-items: center
+    gap: 40px
+    display: flex
+
+.filter-manager
+    justify-content: flex-start
+    align-items: center
+    gap: 8px
+    display: flex
+
+.filter-manager-label
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.filter-select
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+    cursor: pointer
+    position: relative
+
+.filter-selected
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.filter-manager
+    position: relative
+
+.filter-dropdown
+    position: absolute
+    top: calc(100% + 10px)
+    left: 0
+    z-index: 100
+
+.filter-dropdown-inner
+    width: 301px
+    padding: 12px 0
+    background: $c-white
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.16)
+    border-radius: 8px
+    flex-direction: column
+    display: flex
+    overflow: hidden
+
+.filter-dropdown-item
+    width: 100%
+    padding: 0
+    justify-content: space-between
+    align-items: center
+    display: flex
+    cursor: pointer
+
+    &:hover
+        padding: 0 8px
+
+        .filter-dropdown-item-inner
+            padding: 8px
+            background: #F2F2F2
+
+.filter-dropdown-item-inner
+    flex: 1 1 0
+    padding: 8px 16px
+    border-radius: 8px
+    justify-content: space-between
+    align-items: center
+    display: flex
+    gap: 8px
+
+.filter-dropdown-item-name
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+// ===== Section =====
+
+.section-block
+    width: $content-w
+    flex: 1
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 20px
+    display: flex
+    min-height: 0
+
+.section-title-row
+    justify-content: flex-start
+    align-items: center
+    gap: 16px
+    display: inline-flex
+
+.section-title
+    color: $c-text
+    font-size: 24px
+    font-weight: 500
+
+// ===== Kanban Columns =====
+
+.columns-wrap
+    align-self: stretch
+    flex: 1
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 20px
+    display: flex
+
+.columns-row
+    align-self: stretch
+    flex: 1
+    justify-content: flex-start
+    align-items: stretch
+    gap: 20px
+    display: flex
+
+.kanban-col
+    width: $column-w
+    flex: 1
+    padding: 16px
+    border-radius: 8px
+    outline: 1px solid $c-border
+    outline-offset: -1px
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 16px
+    display: flex
+
+.kanban-col--has-cards
+    background: $c-white
+    outline-color: $c-white
+
+.col-top
+    align-self: stretch
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 16px
+    display: flex
+
+.col-header-row
+    align-self: stretch
+    justify-content: space-between
+    align-items: center
+    display: flex
+
+.col-header-left
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+
+.col-name
+    color: $c-text
+    font-size: 16px
+    font-weight: 500
+
+.col-sep
+    color: $c-muted
+    font-size: 16px
+    font-weight: 500
+
+.col-count
+    color: $c-muted
+    font-size: 16px
+    font-weight: 500
+
+.col-line
+    align-self: stretch
+    height: 0
+    border-bottom: 1px solid #E2E2E2
+
+.col-sort
+    justify-content: flex-start
+    align-items: center
+    gap: 8px
+    display: flex
+    cursor: pointer
+    height: 19px
+    overflow: hidden
+
+.col-sort-label
+    color: #959595
+    font-size: 14px
+    font-weight: 500
+    line-height: 20px
+
+.col-body
+    align-self: stretch
+    flex: 1
+    min-height: 0
+    padding: 16px
+    border-radius: 10px
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    gap: 30px
+    display: flex
+
+.col-empty
+    text-align: center
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+
+.col-body--cards
+    justify-content: flex-start
+    gap: 12px
+    padding: 0
+
+// ===== Order Card =====
+
+.order-card
+    align-self: stretch
+    padding: 16px
+    border-radius: 8px
+    outline: 1px solid $c-border
+    outline-offset: -1px
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 12px
+    display: flex
+    cursor: pointer
+    transition: outline-color 0.15s
+    width: 100%
+
+    &:hover
+        outline-color: #B0B0B0
+
+.order-card-body
+    align-self: stretch
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 24px
+    display: flex
+
+.order-card-top
+    align-self: stretch
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 12px
+    display: flex
+
+.order-card-header
+    align-self: stretch
+    height: 25px
+    justify-content: space-between
+    align-items: center
+    display: flex
+
+.order-card-status
+    padding: 5px 10px
+    border-radius: 4px
+    font-size: 13px
+    font-weight: 500
+
+.order-card-status--open
+    background: #E2F9E9
+    outline: 1px solid #D5F4DE
+    outline-offset: -1px
+    color: #3AB88D
+
+.order-card-status--paid
+    background: #F1F8FF
+    outline: 1px solid #4699F1
+    outline-offset: -1px
+    color: #4699F1
+
+.order-card-status--shipped
+    background: #E2F9E9
+    outline: 1px solid #D5F4DE
+    outline-offset: -1px
+    color: #3AB88D
+
+.order-card-status--wait
+    background: #FFF2EF
+    outline: 1px solid #F0A373
+    outline-offset: -1px
+    color: #ED925A
+
+.order-card-status--closed
+    background: #F6F6F6
+    outline: 1px solid rgba(130, 133, 148, 0.15)
+    outline-offset: -1px
+    color: #828594
+
+.order-card-state
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+
+.order-card-dot
+    width: 8px
+    height: 8px
+    border-radius: 50%
+
+.order-card-dot--green
+    background: #3AB88D
+
+.order-card-dot--orange
+    background: #F7630C
+
+.order-card-dot--purple
+    background: #886CE4
+
+.order-card-state-label
+    font-size: 14px
+    font-weight: 400
+
+.order-card-number
+    font-size: 16px
+    font-weight: 500
+    height: 28px
+    display: flex
+    align-items: center
+
+.order-card-counterparty
+    align-self: stretch
+    padding: 12px
+    background: $c-bg
+    border-radius: 5px
+    font-size: 14px
+    font-weight: 500
+
+.order-card-info
+    align-self: stretch
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 10px
+    display: flex
+
+.order-card-info-row
+    align-self: stretch
+    justify-content: space-between
+    align-items: center
+    display: flex
+
+.order-card-info-label
+    color: #828594
+    font-size: 14px
+    font-weight: 400
+
+.order-card-info-value
+    justify-content: flex-start
+    align-items: center
+    gap: 5px
+    display: flex
+    font-size: 14px
+    font-weight: 500
+
+.order-card-info-value--green
+    color: #3AB88D
+
+.order-card-info-value--orange
+    color: #F7630C
+
+.order-card-info-value--red
+    color: #E10101
+
+.order-card-divider
+    align-self: stretch
+    height: 0
+    border-bottom: 1px solid #E2E2E2
+
+.order-card-info-left
+    justify-content: flex-start
+    align-items: center
+    gap: 5px
+    display: flex
+
+.order-card-manager-name
+    color: #828282
+    font-size: 14px
+    font-weight: 400
+
+.order-card-messages
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+
+.order-card-messages-count
+    color: #828282
+    font-size: 14px
+    font-weight: 400
+
+.order-card-date
+    justify-content: flex-start
+    align-items: center
+    gap: 5px
+    display: flex
+    color: #828282
+    font-size: 14px
+    font-weight: 400
+
+.order-card-date-sep
+    color: #828282
+    font-size: 14px
+    font-weight: 400

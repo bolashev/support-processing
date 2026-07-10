@@ -1,0 +1,40 @@
+// breakpoints
+$bp-sm: 576px
+$bp-md: 768px
+$bp-lg: 992px
+$bp-xl: 1200px
+$bp-xxl: 1400px
+
+// colors
+$c-text: #282828
+$c-muted: #878B99
+$c-primary: #4D79FF
+$c-white: #FFFFFF
+$c-bg: #F6F6F6
+$c-card-bg: #F8F8F8
+$c-border: #D1D1D1
+$c-border-soft: #E2E2E2
+$c-outline: #DFE1EB
+
+// typography
+$f-roboto: 'Roboto', system-ui, sans-serif
+
+// sizes
+$page-w: 1512px
+$content-w: 1391px
+$header-w: 1360px
+$column-w: 390px
+
+// mixins
+=flex-col
+    display: flex
+    flex-direction: column
+
+=flex-center
+    display: flex
+    align-items: center
+
+=text-style($size, $weight, $color)
+    font-size: $size
+    font-weight: $weight
+    color: $color

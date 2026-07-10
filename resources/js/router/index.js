@@ -1,31 +1,69 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-    { path: '/', redirect: '/incoming/new' },
+    { path: '/', redirect: '/incoming' },
     {
         path: '/incoming',
-        component: () => import('../views/Incoming.vue'),
-        children: [
-            { path: '', redirect: '/incoming/new' },
-            { path: 'new', component: () => import('../views/IncomingNew.vue') },
-            { path: 'in-progress', component: () => import('../views/IncomingProgress.vue') },
-            { path: 'shipped', component: () => import('../views/IncomingShipped.vue') },
-        ],
+        name: 'incoming',
+        component: () => import('../pages/IncomingPage.vue'),
+        meta: { title: 'Входящие заявки' },
     },
-    { path: '/archive', component: () => import('../views/Archive.vue') },
+    {
+        path: '/archive',
+        name: 'archive',
+        component: () => import('../pages/ArchivePage.vue'),
+        meta: { title: 'Архив' },
+    },
     {
         path: '/statistics',
-        component: () => import('../views/Statistics.vue'),
+        component: () => import('../pages/StatisticsPage.vue'),
+        meta: { title: 'Статистика' },
+        redirect: { name: 'stats-sales' },
         children: [
-            { path: '', redirect: '/statistics/sales' },
-            { path: 'sales', component: () => import('../views/StatsSales.vue') },
-            { path: 'support', component: () => import('../views/StatsSupport.vue') },
+            {
+                path: 'sales',
+                name: 'stats-sales',
+                component: () => import('../pages/StatsSalesPage.vue'),
+            },
+            {
+                path: 'support',
+                name: 'stats-support',
+                component: () => import('../pages/StatsSupportPage.vue'),
+            },
         ],
     },
-    { path: '/notes', component: () => import('../views/Notes.vue') },
-];
+    {
+        path: '/notes',
+        name: 'notes',
+        component: () => import('../pages/NotesPage.vue'),
+        meta: { title: 'Заметки' },
+    },
+    {
+        path: '/orders/:id',
+        name: 'order',
+        component: () => import('../pages/OrderModalPage.vue'),
+        meta: { title: 'Заказ' },
+    },
+    { path: '/:pathMatch(.*)*', redirect: '/incoming' },
+]
 
-export default createRouter({
+function stringifyQuery(query) {
+    const params = new URLSearchParams()
+    for (const [key, value] of Object.entries(query)) {
+        if (value === null || value === undefined) continue
+        if (Array.isArray(value)) {
+            value.forEach(v => params.append(key, v))
+        } else {
+            params.set(key, value)
+        }
+    }
+    return params.toString()
+}
+
+const router = createRouter({
     history: createWebHistory(),
     routes,
-});
+    stringifyQuery,
+})
+
+export default router
