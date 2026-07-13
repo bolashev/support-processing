@@ -17,9 +17,31 @@ $c-border-soft: #E2E2E2
 $c-outline: #DFE1EB
 $c-text-strong: #212126
 $c-success: #3AB88D
+$c-warning: #F7630C
+$c-danger: #E10101
 $c-muted-soft: #828594
+$c-muted-dark: #828282
 $c-sort-icon: #959595
 $c-row-sep: #F0F0F0
+$c-hover-bg: #F2F2F2
+$c-scrollbar: #E6E6E6
+$c-row-hover: #FAFAFA
+
+// status colors
+$c-status-open: #3AB88D
+$c-status-open-bg: #E2F9E9
+$c-status-open-border: #D5F4DE
+$c-status-paid: #4699F1
+$c-status-paid-bg: #F1F8FF
+$c-status-wait: #ED925A
+$c-status-wait-bg: #FFF2EF
+$c-status-wait-border: #F0A373
+$c-status-closed-bg: #F6F6F6
+
+// timer colors
+$c-timer-green: #3AB88D
+$c-timer-orange: #F7630C
+$c-timer-red: #E10101
 
 // typography
 $f-roboto: 'Roboto', system-ui, sans-serif
@@ -43,3 +65,33 @@ $column-w: 390px
     font-size: $size
     font-weight: $weight
     color: $color
+
+=tab-base
+    align-self: stretch
+    padding: 16px 0
+    justify-content: center
+    align-items: center
+    gap: 8px
+    display: flex
+    border-bottom: 2px solid transparent
+    cursor: pointer
+    background: none
+    border-top: none
+    border-left: none
+    border-right: none
+    font-family: inherit
+    color: $c-muted
+    text-decoration: none
+    transition: color 0.15s
+    white-space: nowrap
+
+    span
+        font-size: 14px
+        font-weight: 500
+
+    &:hover
+        color: $c-text
+
+    &.active, &.nav-tab-active
+        border-bottom-color: $c-text
+        color: $c-text

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
-export function useAuth() {
-    const user = ref(window.__INITIAL_USER__ || null)
+const user = ref(window.__INITIAL_USER__ || null)
 
+export function useAuth() {
     return { user }
 }

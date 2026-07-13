@@ -8,62 +8,37 @@
             @export="onExport"
         />
 
-        <div class="stats-table-card">
-            <table class="stats-table">
-                <colgroup>
-                    <col />
-                    <col style="width: 154px" />
-                    <col style="width: 135px" />
-                    <col style="width: 144px" />
-                    <col style="width: 130px" />
-                    <col style="width: 92px" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th v-for="col in columns" :key="col.key">
-                            <div class="stats-col-header">
-                                <span>{{ col.label }}</span>
-                                <svg class="stats-sort-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <rect x="14" y="5" width="6" height="2" transform="rotate(180 14 5)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                    <rect x="14" y="9" width="9" height="2" transform="rotate(180 14 9)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                    <rect x="14" y="13" width="12" height="2" transform="rotate(180 14 13)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                </svg>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="m in filteredManagers" :key="m.id">
-                        <td>
-                            <span class="stats-manager-name">{{ m.name }}</span>
-                            <span v-if="m.isSelf" class="stats-manager-self"> (Вы)</span>
-                        </td>
-                        <td>{{ m.period }}</td>
-                        <td>{{ m.total }}</td>
-                        <td>{{ m.processing }}</td>
-                        <td>{{ percent(m) }}</td>
-                        <td>{{ m.avg }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <StatsTable :columns="columns">
+            <tr v-for="m in filteredManagers" :key="m.id">
+                <td>
+                    <span class="stats-manager-name">{{ m.name }}</span>
+                    <span v-if="m.isSelf" class="stats-manager-self"> (Вы)</span>
+                </td>
+                <td>{{ m.period }}</td>
+                <td>{{ m.total }}</td>
+                <td>{{ m.processing }}</td>
+                <td>{{ percent(m) }}</td>
+                <td>{{ m.avg }}</td>
+            </tr>
+        </StatsTable>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import StatsFilter from '../components/statistics/StatsFilter.vue'
+import StatsTable from '../components/ui/StatsTable.vue'
 
 const period = ref('today')
 const selectedManagerIds = ref([])
 
 const columns = [
-    { key: 'name', label: 'ФИО менеджера', sorted: false },
+    { key: 'name', label: 'ФИО менеджера' },
     { key: 'period', label: 'Период активности', sorted: true },
-    { key: 'total', label: 'Всего отгружено', sorted: false },
-    { key: 'processing', label: 'Через процессинг', sorted: false },
-    { key: 'percent', label: '% Процессинга', sorted: false },
-    { key: 'avg', label: 'Ср. в день', sorted: false },
+    { key: 'total', label: 'Всего отгружено' },
+    { key: 'processing', label: 'Через процессинг' },
+    { key: 'percent', label: '% Процессинга' },
+    { key: 'avg', label: 'Ср. в день' },
 ]
 
 const managers = [

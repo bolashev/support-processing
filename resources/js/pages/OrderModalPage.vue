@@ -1,23 +1,14 @@
 <template>
-    <div class="page-root">
-        <PortalHeader />
-
-        <div class="content-area">
-            <div class="nav-card-wrap">
-                <NavTabs />
+    <MainLayout>
+        <div class="section-block">
+            <div class="section-title-row">
+                <span class="section-title">Заказ #{{ $route.params.id }}</span>
             </div>
-
-            <div class="section-block">
-                <div class="section-title-row">
-                    <span class="section-title">Заказ #{{ $route.params.id }}</span>
-                </div>
-                <p class="placeholder">Детали заказа</p>
-            </div>
+            <p class="placeholder">Детали заказа</p>
         </div>
-    </div>
+    </MainLayout>
 </template>
 
 <script setup>
-import PortalHeader from '../components/layout/PortalHeader.vue'
-import NavTabs from '../components/layout/NavTabs.vue'
+import MainLayout from '../components/layout/MainLayout.vue'
 </script>

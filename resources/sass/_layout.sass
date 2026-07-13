@@ -136,29 +136,7 @@
     display: flex
 
 .nav-tab
-    align-self: stretch
-    padding: 16px 0
-    justify-content: center
-    align-items: center
-    gap: 8px
-    display: flex
-    border-bottom: 2px solid transparent
-    cursor: pointer
-    background: none
-    border-top: none
-    border-left: none
-    border-right: none
-    font-family: inherit
-    color: $c-muted
-    text-decoration: none
-    transition: color 0.15s
-
-    &:hover
-        color: $c-text
-
-    &.nav-tab-active
-        border-bottom-color: $c-text
-        color: $c-text
+    +tab-base
 
 .tab-label
     font-size: 14px

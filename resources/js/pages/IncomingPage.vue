@@ -1,52 +1,45 @@
 <template>
-    <div class="page-root">
-        <PortalHeader />
+    <MainLayout>
+        <template #filter>
+            <IncomingFilter />
+        </template>
 
-        <div class="content-area">
-            <div class="nav-card-wrap">
-                <NavTabs />
-
-                <IncomingFilter />
+        <div class="section-block">
+            <div class="section-title-row">
+                <span class="section-title">Входящие заявки</span>
             </div>
-
-            <div class="section-block">
-                <div class="section-title-row">
-                    <span class="section-title">Входящие заявки</span>
-                </div>
-                <div class="columns-wrap">
-                    <div class="columns-row">
-                        <KanbanColumn
-                            title="Новые"
-                            :cards="newOrders"
-                            empty-text="Пока здесь пусто.<br>Как только появятся новые заявки,<br>они отобразятся в этом списке"
-                            @card-click="openOrder"
-                        />
-                        <KanbanColumn
-                            title="В работе"
-                            :cards="inProgressOrders"
-                            empty-text="Нет заявок в работе"
-                            @card-click="openOrder"
-                        />
-                        <KanbanColumn
-                            title="Отгруженные"
-                            :cards="shippedOrders"
-                            :sortable="true"
-                            empty-text="Вы еще ничего не отгружали.<br>Все завершенные заказы будут<br>храниться здесь"
-                            @card-click="openOrder"
-                        />
-                    </div>
+            <div class="columns-wrap">
+                <div class="columns-row">
+                    <KanbanColumn
+                        title="Новые"
+                        :cards="newOrders"
+                        empty-text="Пока здесь пусто.<br>Как только появятся новые заявки,<br>они отобразятся в этом списке"
+                        @card-click="openOrder"
+                    />
+                    <KanbanColumn
+                        title="В работе"
+                        :cards="inProgressOrders"
+                        empty-text="Нет заявок в работе"
+                        @card-click="openOrder"
+                    />
+                    <KanbanColumn
+                        title="Отгруженные"
+                        :cards="shippedOrders"
+                        :sortable="true"
+                        empty-text="Вы еще ничего не отгружали.<br>Все завершенные заказы будут<br>храниться здесь"
+                        @card-click="openOrder"
+                    />
                 </div>
             </div>
         </div>
 
         <OrderModal :visible="!!selectedOrderId" @close="selectedOrderId = null" />
-    </div>
+    </MainLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import PortalHeader from '../components/layout/PortalHeader.vue'
-import NavTabs from '../components/layout/NavTabs.vue'
+import MainLayout from '../components/layout/MainLayout.vue'
 import IncomingFilter from '../components/orders/IncomingFilter.vue'
 import KanbanColumn from '../components/orders/KanbanColumn.vue'
 import OrderModal from '../components/orders/OrderModal.vue'

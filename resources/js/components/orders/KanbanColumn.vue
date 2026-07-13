@@ -9,11 +9,7 @@
                 </div>
                 <div v-if="sortable" class="col-sort" @click="$emit('sort')">
                     <span class="col-sort-label">{{ sortLabel }}</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <rect x="14" y="5" width="6" height="2" transform="rotate(180 14 5)" fill="#959595"/>
-                        <rect x="14" y="9" width="9" height="2" transform="rotate(180 14 9)" fill="#959595"/>
-                        <rect x="14" y="13" width="12" height="2" transform="rotate(180 14 13)" fill="#959595"/>
-                    </svg>
+                    <Icon name="sort" :size="16" color="#959595" />
                 </div>
             </div>
             <div class="col-line" />
@@ -36,6 +32,7 @@
 
 <script setup>
 import OrderCard from './OrderCard.vue'
+import Icon from '../ui/Icon.vue'
 
 defineProps({
     title: { type: String, required: true },

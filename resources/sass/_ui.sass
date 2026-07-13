@@ -43,7 +43,12 @@
     align-items: center
     justify-content: center
 
-// ===== Manager Dropdown (универсальный) =====
+.search-icon
+    flex-shrink: 0
+    display: flex
+    align-items: center
+
+// ===== Manager Dropdown =====
 
 .manager-dropdown
     position: relative
@@ -116,7 +121,7 @@
         background: transparent
 
     &::-webkit-scrollbar-thumb
-        background: #E6E6E6
+        background: $c-scrollbar
         border-radius: 3px
 
 .manager-dropdown-item
@@ -132,7 +137,7 @@
 
         .manager-dropdown-item-inner
             padding: 8px
-            background: #F2F2F2
+            background: $c-hover-bg
 
 .manager-dropdown-item-inner
     flex: 1 1 0
@@ -150,3 +155,100 @@
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
+
+// ===== Editable Field =====
+
+.editable-field
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: flex-end
+    padding-bottom: 6px
+    border-bottom: 0.5px solid $c-border
+
+    &:last-child
+        border-bottom: none
+        padding-bottom: 0
+
+    &--editing
+        padding: 8px
+        background: $c-white
+        border-radius: 5px
+        border-bottom: none
+        align-items: center
+
+    &--white
+        background: $c-white
+        border-radius: 5px
+        padding: 8px
+        border-bottom: none
+
+        .editable-field__label
+            white-space: nowrap
+
+.editable-field__display
+    display: flex
+    flex-direction: column
+    gap: 4px
+    cursor: pointer
+
+.editable-field__content
+    display: flex
+    flex-direction: column
+    gap: 4px
+    flex: 1
+    min-width: 0
+
+.editable-field__label
+    color: $c-muted-soft
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.editable-field__value
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+    &--link
+        color: $c-status-paid
+
+.editable-field__icon
+    cursor: pointer
+    flex-shrink: 0
+    display: flex
+    align-items: center
+
+    svg path
+        stroke: $c-sort-icon
+
+    &:hover svg path
+        stroke: $c-primary
+
+.editable-field__input
+    border: none
+    outline: none
+    background: transparent
+    font-family: inherit
+    font-size: 14px
+    color: $c-text
+    line-height: 20px
+    padding: 0
+    width: 100%
+
+.editable-field__actions
+    display: flex
+    gap: 10px
+    flex-shrink: 0
+
+.editable-field__action
+    background: none
+    border: none
+    cursor: pointer
+    padding: 0
+    display: flex
+    align-items: center
+
+    &:hover svg path
+        stroke: $c-text

@@ -9,63 +9,38 @@
             @export="onExport"
         />
 
-        <div class="stats-table-card">
-            <table class="stats-table stats-table--support">
-                <colgroup>
-                    <col style="width: 180px" />
-                    <col style="width: 154px" />
-                    <col style="width: 135px" />
-                    <col style="width: 157px" />
-                    <col style="width: 157px" />
-                    <col style="width: 171px" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th v-for="col in columns" :key="col.key">
-                            <div class="stats-col-header">
-                                <span>{{ col.label }}</span>
-                                <svg class="stats-sort-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <rect x="14" y="5" width="6" height="2" transform="rotate(180 14 5)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                    <rect x="14" y="9" width="9" height="2" transform="rotate(180 14 9)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                    <rect x="14" y="13" width="12" height="2" transform="rotate(180 14 13)" :fill="col.sorted ? '#878B99' : '#959595'"/>
-                                </svg>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="m in filteredManagers" :key="m.id">
-                        <td>
-                            <span class="stats-manager-name">{{ m.name }}</span>
-                        </td>
-                        <td>{{ m.accepted }}</td>
-                        <td>
-                            <span :class="{ 'stats-value--alert': m.receiveTimeAlert }">{{ m.receiveTime }}</span>
-                        </td>
-                        <td>{{ m.returnWork }}</td>
-                        <td>{{ m.shipmentWork }}</td>
-                        <td>{{ m.lazarRegistrations }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <StatsTable :columns="columns" variant="support">
+            <tr v-for="m in filteredManagers" :key="m.id">
+                <td>
+                    <span class="stats-manager-name">{{ m.name }}</span>
+                </td>
+                <td>{{ m.accepted }}</td>
+                <td>
+                    <span :class="{ 'stats-value--alert': m.receiveTimeAlert }">{{ m.receiveTime }}</span>
+                </td>
+                <td>{{ m.returnWork }}</td>
+                <td>{{ m.shipmentWork }}</td>
+                <td>{{ m.lazarRegistrations }}</td>
+            </tr>
+        </StatsTable>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import StatsFilter from '../components/statistics/StatsFilter.vue'
+import StatsTable from '../components/ui/StatsTable.vue'
 
 const period = ref('today')
 const selectedManagerIds = ref([])
 
 const columns = [
-    { key: 'name', label: 'ФИО менеджера', sorted: false },
-    { key: 'accepted', label: 'Принято заявок', sorted: false },
-    { key: 'receiveTime', label: 'Время на прием', sorted: false },
-    { key: 'returnWork', label: 'Работа с возвратом', sorted: false },
-    { key: 'shipmentWork', label: 'Работа с отгрузкой', sorted: false },
-    { key: 'lazarRegistrations', label: 'Регистраций в Лазарь', sorted: false },
+    { key: 'name', label: 'ФИО менеджера', width: '180px' },
+    { key: 'accepted', label: 'Принято заявок', width: '154px' },
+    { key: 'receiveTime', label: 'Время на прием', width: '135px' },
+    { key: 'returnWork', label: 'Работа с возвратом', width: '157px' },
+    { key: 'shipmentWork', label: 'Работа с отгрузкой', width: '157px' },
+    { key: 'lazarRegistrations', label: 'Регистраций в Лазарь', width: '171px' },
 ]
 
 const managers = [

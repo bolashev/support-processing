@@ -1,69 +1,59 @@
 <template>
-    <div class="page-root">
-        <PortalHeader />
-
-        <div class="content-area">
-            <div class="nav-card-wrap">
-                <NavTabs />
+    <MainLayout>
+        <div class="section-block notes-page">
+            <div class="section-title-row">
+                <span class="section-title">Личные заметки</span>
             </div>
 
-            <div class="section-block notes-page">
-                <div class="section-title-row">
-                    <span class="section-title">Личные заметки</span>
-                </div>
-
-                <div class="notes-columns">
-                    <div class="notes-panel">
-                        <div class="notes-panel-top">
-                            <div class="col-header-row">
-                                <div class="col-header-left">
-                                    <span class="col-name">Заметки</span>
-                                    <span class="col-sep">&middot;</span>
-                                    <span class="col-count">{{ notes.length }}</span>
-                                </div>
+            <div class="notes-columns">
+                <div class="notes-panel">
+                    <div class="notes-panel-top">
+                        <div class="col-header-row">
+                            <div class="col-header-left">
+                                <span class="col-name">Заметки</span>
+                                <span class="col-sep">&middot;</span>
+                                <span class="col-count">{{ notes.length }}</span>
                             </div>
-                            <div class="col-line" />
+                        </div>
+                        <div class="col-line" />
+                    </div>
+
+                    <div class="notes-panel-body">
+                        <div class="comment-form notes-new-form">
+                            <textarea
+                                ref="newNoteRef"
+                                v-model="newNoteText"
+                                class="comment-input notes-new-textarea"
+                                placeholder="Новая заметка..."
+                                rows="3"
+                            ></textarea>
+                            <div class="comment-form-bottom">
+                                <div class="comment-divider" />
+                                <button
+                                    class="comment-send notes-add-btn"
+                                    :disabled="!newNoteText.trim()"
+                                    @click="addNote"
+                                >Добавить</button>
+                            </div>
                         </div>
 
-                        <div class="notes-panel-body">
-                            <div class="modal-comment-new notes-new-form">
-                                <textarea
-                                    ref="newNoteRef"
-                                    v-model="newNoteText"
-                                    class="modal-comment-input notes-new-textarea"
-                                    placeholder="Новая заметка..."
-                                    rows="3"
-                                ></textarea>
-                                <div class="modal-comment-new-bottom">
-                                    <div class="modal-comment-divider" />
+                        <div class="notes-list">
+                            <div
+                                v-for="note in notes"
+                                :key="note.id"
+                                class="notes-item"
+                            >
+                                <div class="notes-item-header">
+                                    <span class="notes-item-date">{{ note.date }} &middot; {{ note.time }}</span>
                                     <button
-                                        class="modal-comment-send notes-add-btn"
-                                        :disabled="!newNoteText.trim()"
-                                        @click="addNote"
-                                    >Добавить</button>
+                                        class="notes-delete-btn"
+                                        @click="deleteNote(note.id)"
+                                    >
+                                        <Icon name="close" :size="16" color="#828282" />
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div class="notes-list">
-                                <div
-                                    v-for="note in notes"
-                                    :key="note.id"
-                                    class="notes-item"
-                                >
-                                    <div class="notes-item-header">
-                                        <span class="notes-item-date">{{ note.date }} &middot; {{ note.time }}</span>
-                                        <button
-                                            class="notes-delete-btn"
-                                            @click="deleteNote(note.id)"
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <path d="M3.66602 3.33301L12.9993 12.6663M3.66602 12.6663L12.9993 3.33301" stroke="#828282" stroke-width="1.5"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="notes-item-body">
-                                        <p class="notes-item-text">{{ note.text }}</p>
-                                    </div>
+                                <div class="notes-item-body">
+                                    <p class="notes-item-text">{{ note.text }}</p>
                                 </div>
                             </div>
                         </div>
@@ -71,13 +61,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </MainLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import PortalHeader from '../components/layout/PortalHeader.vue'
-import NavTabs from '../components/layout/NavTabs.vue'
+import MainLayout from '../components/layout/MainLayout.vue'
+import Icon from '../components/ui/Icon.vue'
 
 const newNoteRef = ref(null)
 const newNoteText = ref('')

@@ -19,29 +19,6 @@
     gap: 40px
     display: flex
 
-// ===== Section =====
-
-.section-block
-    width: $content-w
-    flex: 1
-    flex-direction: column
-    justify-content: flex-start
-    align-items: flex-start
-    gap: 20px
-    display: flex
-    min-height: 0
-
-.section-title-row
-    justify-content: flex-start
-    align-items: center
-    gap: 16px
-    display: inline-flex
-
-.section-title
-    color: $c-text
-    font-size: 24px
-    font-weight: 500
-
 // ===== Kanban Columns =====
 
 .columns-wrap
@@ -116,7 +93,7 @@
 .col-line
     align-self: stretch
     height: 0
-    border-bottom: 1px solid #E2E2E2
+    border-bottom: 1px solid $c-border-soft
 
 .col-sort
     justify-content: flex-start
@@ -128,7 +105,7 @@
     overflow: hidden
 
 .col-sort-label
-    color: #959595
+    color: $c-sort-icon
     font-size: 14px
     font-weight: 500
     line-height: 20px
@@ -207,34 +184,34 @@
     font-weight: 500
 
 .order-card-status--open
-    background: #E2F9E9
-    outline: 1px solid #D5F4DE
+    background: $c-status-open-bg
+    outline: 1px solid $c-status-open-border
     outline-offset: -1px
-    color: #3AB88D
+    color: $c-status-open
 
 .order-card-status--paid
-    background: #F1F8FF
-    outline: 1px solid #4699F1
+    background: $c-status-paid-bg
+    outline: 1px solid $c-status-paid
     outline-offset: -1px
-    color: #4699F1
+    color: $c-status-paid
 
 .order-card-status--shipped
-    background: #E2F9E9
-    outline: 1px solid #D5F4DE
+    background: $c-status-open-bg
+    outline: 1px solid $c-status-open-border
     outline-offset: -1px
-    color: #3AB88D
+    color: $c-status-open
 
 .order-card-status--wait
-    background: #FFF2EF
-    outline: 1px solid #F0A373
+    background: $c-status-wait-bg
+    outline: 1px solid $c-status-wait-border
     outline-offset: -1px
-    color: #ED925A
+    color: $c-status-wait
 
 .order-card-status--closed
-    background: #F6F6F6
+    background: $c-status-closed-bg
     outline: 1px solid rgba(130, 133, 148, 0.15)
     outline-offset: -1px
-    color: #828594
+    color: $c-muted-soft
 
 .order-card-state
     justify-content: flex-start
@@ -248,10 +225,10 @@
     border-radius: 50%
 
 .order-card-dot--green
-    background: #3AB88D
+    background: $c-timer-green
 
 .order-card-dot--orange
-    background: #F7630C
+    background: $c-timer-orange
 
 .order-card-dot--purple
     background: #886CE4
@@ -290,7 +267,7 @@
     display: flex
 
 .order-card-info-label
-    color: #828594
+    color: $c-muted-soft
     font-size: 14px
     font-weight: 400
 
@@ -303,18 +280,18 @@
     font-weight: 500
 
 .order-card-info-value--green
-    color: #3AB88D
+    color: $c-timer-green
 
 .order-card-info-value--orange
-    color: #F7630C
+    color: $c-timer-orange
 
 .order-card-info-value--red
-    color: #E10101
+    color: $c-timer-red
 
 .order-card-divider
     align-self: stretch
     height: 0
-    border-bottom: 1px solid #E2E2E2
+    border-bottom: 1px solid $c-border-soft
 
 .order-card-info-left
     justify-content: flex-start
@@ -323,7 +300,7 @@
     display: flex
 
 .order-card-manager-name
-    color: #828282
+    color: $c-muted-dark
     font-size: 14px
     font-weight: 400
 
@@ -334,7 +311,7 @@
     display: flex
 
 .order-card-messages-count
-    color: #828282
+    color: $c-muted-dark
     font-size: 14px
     font-weight: 400
 
@@ -343,11 +320,11 @@
     align-items: center
     gap: 5px
     display: flex
-    color: #828282
+    color: $c-muted-dark
     font-size: 14px
     font-weight: 400
 
 .order-card-date-sep
-    color: #828282
+    color: $c-muted-dark
     font-size: 14px
     font-weight: 400

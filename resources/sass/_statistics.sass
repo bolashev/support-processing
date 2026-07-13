@@ -69,6 +69,8 @@
 
 .stats-metric-arrow
     flex-shrink: 0
+    width: 14px
+    height: 35px
 
 .stats-metric-label
     color: $c-muted
@@ -99,29 +101,7 @@
     display: flex
 
 .stats-sub-tab
-    align-self: stretch
-    padding: 16px 0
-    justify-content: center
-    align-items: center
-    gap: 8px
-    display: flex
-    border-bottom: 2px solid transparent
-    color: $c-muted
-    text-decoration: none
-    cursor: pointer
-    transition: color 0.15s
-
-    span
-        font-size: 14px
-        font-weight: 500
-        white-space: nowrap
-
-    &:hover
-        color: $c-text
-
-    &.active
-        border-bottom-color: $c-text
-        color: $c-text
+    +tab-base
 
 // --- Контент под-вкладки (фильтр + таблица) ---
 
@@ -258,7 +238,7 @@
         transition: background 0.15s
 
         &:hover
-            background: #FAFAFA
+            background: $c-row-hover
 
 .stats-col-header
     justify-content: flex-start
@@ -300,4 +280,4 @@
 // алерт-значение (красный)
 
 .stats-value--alert
-    color: #E10101
+    color: $c-danger

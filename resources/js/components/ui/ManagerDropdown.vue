@@ -4,15 +4,8 @@
         <span class="manager-dropdown-label">{{ displayLabel }}</span>
         <span class="manager-dropdown-sep" v-if="showSep">·</span>
         <span class="manager-dropdown-count" v-if="showCount">{{ displayCount }}</span>
-        <div data-svg-wrapper class="manager-dropdown-chevron" :class="{ 'manager-dropdown-chevron--open': open }">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <mask id="mask-manager-chevron" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
-                    <rect x="20" width="20" height="20" transform="rotate(90 20 0)" fill="#D9D9D9"/>
-                </mask>
-                <g mask="url(#mask-manager-chevron)">
-                    <path d="M9.99967 10.875L13.4163 7.45835C13.5691 7.30558 13.7462 7.22919 13.9476 7.22919C14.149 7.22919 14.3261 7.30558 14.4788 7.45835C14.6316 7.61113 14.708 7.78821 14.708 7.9896C14.708 8.19099 14.6293 8.37042 14.4718 8.5279L10.5205 12.4792C10.4455 12.5486 10.3643 12.6007 10.2768 12.6354C10.1893 12.6702 10.0955 12.6875 9.99551 12.6875C9.89551 12.6875 9.80176 12.6702 9.71426 12.6354C9.62676 12.6007 9.54829 12.5486 9.47884 12.4792L5.52755 8.5279C5.37008 8.37042 5.29481 8.19446 5.30176 8.00002C5.3087 7.80558 5.38856 7.63196 5.54134 7.47919C5.69412 7.32641 5.8712 7.25002 6.07259 7.25002C6.27398 7.25002 6.45106 7.32641 6.60384 7.47919L9.99967 10.875Z" fill="#282828"/>
-                </g>
-            </svg>
+        <div class="manager-dropdown-chevron" :class="{ 'manager-dropdown-chevron--open': open }">
+            <Icon name="chevron-down" :size="20" color="#282828" />
         </div>
 
         <div v-if="open" class="manager-dropdown-list" @click.stop>
@@ -33,7 +26,6 @@
                             <svg v-else width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="3.25" fill="white"/>
                                 <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="3.25" stroke="#DFE1EB" stroke-width="1.5"/>
-                                <path d="M4.5 10.5L8 14L15.5 6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
@@ -45,6 +37,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import Icon from './Icon.vue'
 
 const props = defineProps({
     items: { type: Array, default: () => [] },

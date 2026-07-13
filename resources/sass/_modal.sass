@@ -38,7 +38,7 @@
     flex-shrink: 0
 
     &:hover
-        background: #F0F0F0
+        background: $c-row-sep
 
 // ===== Modal Panels Layout =====
 
@@ -62,7 +62,7 @@
     &--history
         width: 340px
         flex-shrink: 0
-        border-left: 1px solid #D1D1D1
+        border-left: 1px solid $c-border
 
 .modal-panel-header
     position: relative
@@ -138,10 +138,10 @@
     font-weight: 500
 
     &--open
-        background: #E2F9E9
-        outline: 1px solid #D5F4DE
+        background: $c-status-open-bg
+        outline: 1px solid $c-status-open-border
         outline-offset: -1px
-        color: #3AB88D
+        color: $c-status-open
 
 .modal-order-row
     display: flex
@@ -164,7 +164,7 @@
     border-radius: 50%
 
     &--green
-        background: #3AB88D
+        background: $c-timer-green
 
 .modal-state-label
     color: $c-text
@@ -213,7 +213,7 @@
     gap: 4px
 
 .info-label
-    color: #828594
+    color: $c-muted-soft
     font-size: 14px
     font-weight: 400
     line-height: 20px
@@ -225,7 +225,7 @@
     line-height: 20px
 
     &--link
-        color: #4699F1
+        color: $c-status-paid
 
 .info-actions
     display: flex
@@ -255,7 +255,7 @@
     font-weight: 500
 
 .modal-manager-role
-    color: #959595
+    color: $c-sort-icon
     font-size: 13px
     font-weight: 400
     line-height: 18px
@@ -277,13 +277,13 @@
     flex-direction: column
 
 .modal-doc-name
-    color: #212126
+    color: $c-text-strong
     font-size: 14px
     font-weight: 400
     line-height: 20px
 
 .modal-doc-size
-    color: #828282
+    color: $c-muted-dark
     font-size: 13px
     font-weight: 400
     line-height: 20px
@@ -301,68 +301,9 @@
     font-weight: 500
 
 .modal-history-count
-    color: #828282
+    color: $c-muted-dark
     font-size: 16px
     font-weight: 500
-
-// ===== Comment Input =====
-
-.modal-comment-new
-    display: flex
-    flex-direction: column
-    gap: 8px
-    padding: 16px
-    border-radius: 5px
-    background: $c-bg
-    outline: 1px solid #E2E2E2
-    outline-offset: -1px
-    transition: outline-color 0.15s, background 0.15s
-
-    &:hover
-        background: transparent
-        outline-color: #98CAFF
-
-    &:focus-within
-        background: transparent
-        outline-color: #4D79FF
-
-.modal-comment-input
-    width: 100%
-    border: none
-    outline: none
-    background: transparent
-    font-family: inherit
-    font-size: 14px
-    color: $c-text
-    resize: none
-    min-height: 60px
-
-    &::placeholder
-        color: #828594
-
-.modal-comment-new-bottom
-    display: flex
-    flex-direction: column
-    align-items: flex-end
-    gap: 8px
-
-.modal-comment-divider
-    width: 100%
-    height: 0
-    border-bottom: 1px solid $c-border-soft
-
-.modal-comment-send
-    color: #828594
-    font-size: 14px
-    font-weight: 400
-    background: none
-    border: none
-    cursor: pointer
-    padding: 0
-    transition: color 0.15s
-
-.modal-comment-new:focus-within .modal-comment-send
-    color: #4D79FF
 
 // ===== Comment =====
 
@@ -402,7 +343,7 @@
     display: flex
     align-items: center
     gap: 5px
-    color: #828282
+    color: $c-muted-dark
     font-size: 14px
     font-weight: 400
 
@@ -433,7 +374,7 @@
     white-space: nowrap
 
     &--primary
-        background: #E10101
+        background: $c-danger
         color: $c-white
 
         &:hover
@@ -449,100 +390,3 @@
 
     &:disabled
         opacity: 0.60
-
-// ===== Editable Field =====
-
-.editable-field
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: flex-end
-    padding-bottom: 6px
-    border-bottom: 0.5px solid $c-border
-
-    &:last-child
-        border-bottom: none
-        padding-bottom: 0
-
-    &--editing
-        padding: 8px
-        background: $c-white
-        border-radius: 5px
-        border-bottom: none
-        align-items: center
-
-    &--white
-        background: $c-white
-        border-radius: 5px
-        padding: 8px
-        border-bottom: none
-
-        .editable-field__label
-            white-space: nowrap
-
-.editable-field__display
-    display: flex
-    flex-direction: column
-    gap: 4px
-    cursor: pointer
-
-.editable-field__content
-    display: flex
-    flex-direction: column
-    gap: 4px
-    flex: 1
-    min-width: 0
-
-.editable-field__label
-    color: #828594
-    font-size: 14px
-    font-weight: 400
-    line-height: 20px
-
-.editable-field__value
-    color: $c-text
-    font-size: 14px
-    font-weight: 400
-    line-height: 20px
-
-    &--link
-        color: #4699F1
-
-.editable-field__icon
-    cursor: pointer
-    flex-shrink: 0
-    display: flex
-    align-items: center
-
-    svg path
-        stroke: #959595
-
-    &:hover svg path
-        stroke: #4D79FF
-
-.editable-field__input
-    border: none
-    outline: none
-    background: transparent
-    font-family: inherit
-    font-size: 14px
-    color: $c-text
-    line-height: 20px
-    padding: 0
-    width: 100%
-
-.editable-field__actions
-    display: flex
-    gap: 10px
-    flex-shrink: 0
-
-.editable-field__action
-    background: none
-    border: none
-    cursor: pointer
-    padding: 0
-    display: flex
-    align-items: center
-
-    &:hover svg path
-        stroke: $c-text
