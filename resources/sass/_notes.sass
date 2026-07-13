@@ -1,15 +1,112 @@
 @use 'variables' as *
 
-// ===== Notes =====
+// ===== Notes Page =====
 
 .notes-page
-    .page-title
-        color: $c-text
-        font-size: 24px
-        font-weight: 500
-        margin-bottom: 16px
+    flex: 1
+    min-height: 0
 
-    .placeholder
-        color: $c-muted
-        font-size: 14px
-        line-height: 19px
+// ===== Notes Columns (like .columns-row) =====
+
+.notes-columns
+    align-self: stretch
+    flex: 1
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 20px
+    display: flex
+    min-height: 0
+
+// ===== Notes Panel =====
+
+.notes-panel
+    width: $column-w
+    align-self: stretch
+    padding: 16px
+    border-radius: 8px
+    outline: 1px solid $c-border
+    outline-offset: -1px
+    +flex-col
+    gap: 16px
+    background: $c-white
+    outline-color: $c-white
+    min-height: 0
+
+.notes-panel-top
+    +flex-col
+    gap: 16px
+
+.notes-panel-body
+    align-self: stretch
+    flex: 1
+    min-height: 0
+    +flex-col
+    gap: 16px
+
+// ===== New Note Form (reuses modal-comment-new) =====
+
+.notes-new-form
+    flex-shrink: 0
+
+.notes-new-textarea
+    min-height: 60px
+
+.notes-add-btn
+    &:disabled
+        opacity: 0.4
+        cursor: default
+
+// ===== Notes List =====
+
+.notes-list
+    align-self: stretch
+    flex: 1
+    min-height: 0
+    +flex-col
+    gap: 32px
+    overflow-y: auto
+    border-right: 8px solid transparent
+
+    &::-webkit-scrollbar
+        width: 4px
+
+    &::-webkit-scrollbar-track
+        background: transparent
+
+    &::-webkit-scrollbar-thumb
+        background: $c-border
+        border-radius: 2px
+
+.notes-item
+    +flex-col
+    gap: 10px
+
+.notes-item-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.notes-item-date
+    +text-style(14px, 400, #828282)
+
+.notes-delete-btn
+    border: none
+    background: transparent
+    cursor: pointer
+    padding: 0
+    display: flex
+    align-items: center
+    justify-content: center
+
+    &:hover svg path
+        stroke: $c-text
+
+.notes-item-body
+    padding: 16px
+    background: $c-bg
+    border-radius: 5px
+
+.notes-item-text
+    +text-style(14px, 400, $c-text)
+    line-height: 20px
+    margin: 0
