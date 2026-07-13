@@ -42,3 +42,111 @@
     display: flex
     align-items: center
     justify-content: center
+
+// ===== Manager Dropdown (универсальный) =====
+
+.manager-dropdown
+    position: relative
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+    cursor: pointer
+
+.manager-dropdown-prefix
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+    margin-right: 4px
+
+.manager-dropdown-label
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.manager-dropdown-sep
+    color: $c-text
+    font-size: 24px
+    font-weight: 500
+    line-height: 1
+
+.manager-dropdown-count
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.manager-dropdown-chevron
+    width: 20px
+    height: 20px
+    transition: transform 0.2s ease
+    transform-origin: center
+
+    &--open
+        transform: rotate(180deg)
+
+.manager-dropdown-list
+    position: absolute
+    top: calc(100% + 10px)
+    left: 0
+    z-index: 100
+
+.manager-dropdown-list-inner
+    width: 301px
+    padding: 12px 0
+    background: $c-white
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.16)
+    border-radius: 8px
+    flex-direction: column
+    display: flex
+    overflow: hidden
+
+.manager-dropdown-list-scroll
+    max-height: 144px
+    overflow-y: auto
+    flex-direction: column
+    display: flex
+
+    &::-webkit-scrollbar
+        width: 6px
+
+    &::-webkit-scrollbar-track
+        background: transparent
+
+    &::-webkit-scrollbar-thumb
+        background: #E6E6E6
+        border-radius: 3px
+
+.manager-dropdown-item
+    width: 100%
+    padding: 0
+    justify-content: space-between
+    align-items: center
+    display: flex
+    cursor: pointer
+
+    &:hover
+        padding: 0 8px
+
+        .manager-dropdown-item-inner
+            padding: 8px
+            background: #F2F2F2
+
+.manager-dropdown-item-inner
+    flex: 1 1 0
+    padding: 8px 16px
+    border-radius: 8px
+    justify-content: space-between
+    align-items: center
+    display: flex
+    gap: 8px
+
+.manager-dropdown-item-name
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis

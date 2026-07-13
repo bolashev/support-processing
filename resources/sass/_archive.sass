@@ -2,14 +2,61 @@
 
 // ===== Archive =====
 
-.archive-page
-    .page-title
-        color: $c-text
-        font-size: 24px
-        font-weight: 500
-        margin-bottom: 16px
+.archive-status-badge
+    display: inline-flex
+    align-items: center
+    padding: 5px 10px
+    background: $c-bg
+    border-radius: 4px
+    outline: 1px rgba(130.15, 133.11, 147.90, 0.15) solid
+    outline-offset: -1px
+    color: $c-muted-soft
+    font-size: 13px
+    font-weight: 500
+    white-space: nowrap
 
-    .placeholder
+.archive-manager
+    display: flex
+    align-items: center
+    gap: 10px
+
+    span
+        color: $c-text
+        font-size: 14px
+        font-weight: 400
+        white-space: nowrap
+
+.archive-manager-self
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+
+.archive-empty
+    align-self: stretch
+    height: 300px
+    padding: 16px
+    border-radius: 10px
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    display: flex
+
+    span
+        text-align: center
         color: $c-muted
         font-size: 14px
+        font-weight: 400
         line-height: 19px
+
+.section-title-sep
+    color: $c-muted
+    font-size: 24px
+    font-weight: 500
+
+.section-title-count
+    color: $c-muted
+    font-size: 24px
+    font-weight: 500
+
+.archive-page .section-title-row
+    gap: 4px

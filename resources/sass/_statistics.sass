@@ -3,33 +3,301 @@
 // ===== Statistics =====
 
 .statistics-page
-    .page-title
-        color: $c-text
-        font-size: 24px
+    gap: 20px
+
+// --- Заголовок сводки ---
+
+.stats-summary-title
+    align-self: stretch
+    color: $c-text
+    font-size: 24px
+    font-weight: 500
+
+// --- Карточки сводки ---
+
+.stats-cards-row
+    align-self: stretch
+    justify-content: flex-start
+    align-items: stretch
+    gap: 20px
+    display: flex
+
+.stats-card
+    align-self: stretch
+    background: $c-white
+    border-radius: 8px
+    padding: 32px
+    flex-direction: row
+    justify-content: flex-start
+    align-items: center
+    gap: 55px
+    display: flex
+
+.stats-card--count
+    gap: 0
+
+.stats-metric
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    gap: 5px
+    display: flex
+
+.stats-metric-value-row
+    justify-content: flex-start
+    align-items: flex-end
+    gap: 5px
+    display: flex
+
+.stats-metric-value
+    color: $c-text
+    font-size: 45px
+    font-weight: 500
+    line-height: 1
+
+    &--success
+        color: $c-success
+
+    &--strong
+        color: $c-text-strong
+
+.stats-metric-percent
+    color: $c-text
+    font-size: 22px
+    font-weight: 500
+    line-height: 1
+
+.stats-metric-arrow
+    flex-shrink: 0
+
+.stats-metric-label
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+// --- Карточка с под-вкладками ---
+
+.stats-tabs-section
+    align-self: stretch
+    flex-direction: column
+    display: flex
+
+.stats-tabs-card
+    align-self: stretch
+    background: $c-white
+    border-top-left-radius: 8px
+    border-top-right-radius: 8px
+    border-bottom: 1px solid $c-border-soft
+
+.stats-tabs-header
+    height: 61px
+    padding: 0 16px
+    justify-content: flex-start
+    align-items: center
+    gap: 30px
+    display: flex
+
+.stats-sub-tab
+    align-self: stretch
+    padding: 16px 0
+    justify-content: center
+    align-items: center
+    gap: 8px
+    display: flex
+    border-bottom: 2px solid transparent
+    color: $c-muted
+    text-decoration: none
+    cursor: pointer
+    transition: color 0.15s
+
+    span
+        font-size: 14px
         font-weight: 500
-        margin-bottom: 16px
+        white-space: nowrap
 
-    .sub-tabs
-        display: flex
-        gap: 12px
-        margin-bottom: 16px
+    &:hover
+        color: $c-text
 
-    .sub-tab
-        padding: 6px 14px
-        color: #555
-        border-radius: 6px
+    &.active
+        border-bottom-color: $c-text
+        color: $c-text
+
+// --- Контент под-вкладки (фильтр + таблица) ---
+
+.stats-page-content
+    align-self: stretch
+    flex-direction: column
+    gap: 20px
+    display: flex
+
+// --- Карточка фильтра ---
+
+.stats-filter-card
+    align-self: stretch
+    background: $c-white
+    border-bottom-left-radius: 8px
+    border-bottom-right-radius: 8px
+    padding: 16px
+    justify-content: space-between
+    align-items: center
+    display: flex
+
+.stats-filter-left
+    justify-content: flex-start
+    align-items: center
+    gap: 40px
+    display: flex
+
+// переключатель периода
+
+.stats-period-switcher
+    padding: 3px
+    background: $c-bg
+    border-radius: 4px
+    justify-content: center
+    align-items: center
+    gap: 16px
+    display: flex
+
+.stats-period-btn
+    padding: 7px 10px
+    border-radius: 4px
+    border: none
+    background: transparent
+    color: $c-text
+    font-family: inherit
+    font-size: 14px
+    font-weight: 400
+    cursor: pointer
+    white-space: nowrap
+    transition: background 0.15s
+
+    &:hover
+        background: rgba(255, 255, 255, 0.5)
+
+    &.active
         background: $c-white
-        border: 1px solid #E0E0E0
-        font-size: 13px
-        text-decoration: none
-        cursor: pointer
 
-        &.active
-            color: #1A73E8
-            border-color: #1A73E8
-            background: #E8F0FE
+.stats-period-btn-inner
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
 
-    .placeholder
+// экспорт
+
+.stats-export
+    justify-content: flex-start
+    align-items: center
+    gap: 4px
+    display: flex
+    cursor: pointer
+
+    &:hover
+        .stats-export-text
+            color: $c-primary
+
+.stats-export-text
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+    transition: color 0.15s
+
+.stats-export-ext
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+// --- Таблица ---
+
+.stats-table-card
+    align-self: stretch
+    background: $c-white
+    border-top-left-radius: 8px
+    border-top-right-radius: 8px
+    overflow: hidden
+
+.stats-table
+    width: 100%
+    border-collapse: separate
+    border-spacing: 0
+
+    thead th
+        padding: 16px
+        text-align: left
         color: $c-muted
         font-size: 14px
-        line-height: 19px
+        font-weight: 500
+        line-height: 20px
+        white-space: nowrap
+        vertical-align: middle
+        background: $c-white
+        border-bottom: 2px solid $c-bg
+
+        &:first-child
+            padding-left: 16px
+
+    tbody td
+        padding: 16px
+        color: $c-text
+        font-size: 14px
+        font-weight: 400
+        line-height: 20px
+        background: $c-white
+        border-bottom: 2px solid $c-bg
+        white-space: nowrap
+        vertical-align: middle
+
+    tbody tr:last-child td
+        border-bottom: none
+
+    tbody tr
+        transition: background 0.15s
+
+        &:hover
+            background: #FAFAFA
+
+.stats-col-header
+    justify-content: flex-start
+    align-items: center
+    gap: 8px
+    display: flex
+
+.stats-sort-icon
+    flex-shrink: 0
+
+.stats-manager-name
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+
+.stats-manager-self
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+
+.stats-empty
+    padding: 48px 16px
+    text-align: center
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+// --- Placeholder для поддержки ---
+
+.stats-placeholder
+    padding: 48px 16px
+    text-align: center
+    color: $c-muted
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+// алерт-значение (красный)
+
+.stats-value--alert
+    color: #E10101

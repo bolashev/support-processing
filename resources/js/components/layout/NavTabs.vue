@@ -11,7 +11,6 @@
                     :to="tab.to"
                     class="nav-tab"
                     active-class="nav-tab-active"
-                    exact
                 >
                     <div data-svg-wrapper style="position: relative">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
