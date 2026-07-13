@@ -19,30 +19,43 @@
                             title="Новые"
                             :cards="newOrders"
                             empty-text="Пока здесь пусто.<br>Как только появятся новые заявки,<br>они отобразятся в этом списке"
+                            @card-click="openOrder"
                         />
                         <KanbanColumn
                             title="В работе"
                             :cards="inProgressOrders"
                             empty-text="Нет заявок в работе"
+                            @card-click="openOrder"
                         />
                         <KanbanColumn
                             title="Отгруженные"
                             :cards="shippedOrders"
                             :sortable="true"
                             empty-text="Вы еще ничего не отгружали.<br>Все завершенные заказы будут<br>храниться здесь"
+                            @card-click="openOrder"
                         />
                     </div>
                 </div>
             </div>
         </div>
+
+        <OrderModal :visible="!!selectedOrderId" @close="selectedOrderId = null" />
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import PortalHeader from '../components/layout/PortalHeader.vue'
 import NavTabs from '../components/layout/NavTabs.vue'
 import IncomingFilter from '../components/orders/IncomingFilter.vue'
 import KanbanColumn from '../components/orders/KanbanColumn.vue'
+import OrderModal from '../components/orders/OrderModal.vue'
+
+const selectedOrderId = ref(null)
+
+function openOrder(id) {
+    selectedOrderId.value = id
+}
 
 const newOrders = [
     {

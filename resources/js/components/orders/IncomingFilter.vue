@@ -5,7 +5,7 @@
                 <span class="filter-manager-label">Менеджер заявки:</span>
                 <div class="filter-select" @click="open = !open" role="button" tabindex="0">
                     <span class="filter-selected">{{ selectedLabel }}</span>
-                    <div data-svg-wrapper style="position: relative">
+                    <div data-svg-wrapper style="position: relative" class="filter-chevron" :class="{ 'filter-chevron--open': open }">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <mask id="mask0_2619_2099" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
                                 <rect x="20" width="20" height="20" transform="rotate(90 20 0)" fill="#D9D9D9"/>

@@ -1,0 +1,548 @@
+@use 'variables' as *
+
+// ===== Modal Overlay =====
+
+.modal-overlay
+    position: fixed
+    inset: 0
+    background: rgba(29, 29, 29, 0.45)
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    z-index: 1000
+    overflow-x: auto
+
+.modal-container
+    width: 1170px
+    height: 100vh
+    background: $c-white
+    display: flex
+    flex-direction: column
+
+.modal-close-wrap
+    padding: 10px
+    display: flex
+    align-items: flex-start
+
+.modal-close
+    width: 47px
+    height: 47px
+    background: $c-white
+    border-radius: 50px
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+    border: none
+    padding: 10px
+    flex-shrink: 0
+
+    &:hover
+        background: #F0F0F0
+
+// ===== Modal Panels Layout =====
+
+.modal-panels
+    flex: 1
+    display: flex
+    min-height: 0
+
+// ===== Panel Base =====
+
+.modal-panel
+    display: flex
+    flex-direction: column
+    overflow: hidden
+
+    &--info
+        width: 490px
+        flex-shrink: 0
+
+    &--docs,
+    &--history
+        width: 340px
+        flex-shrink: 0
+        border-left: 1px solid #D1D1D1
+
+.modal-panel-header
+    position: relative
+    padding: 0 20px 6px 20px
+    height: 86px
+    display: flex
+    align-items: center
+
+    &::after
+        content: ''
+        position: absolute
+        left: 20px
+        right: 20px
+        bottom: 0
+        height: 1px
+        background: $c-border
+
+.modal-panel-header-inner
+    display: flex
+    align-items: center
+    height: 100%
+
+.modal-panel-title
+    color: $c-text
+    font-size: 18px
+    font-weight: 400
+
+.modal-section-fixed
+    padding: 25px 20px 0 20px
+    flex-shrink: 0
+    margin-bottom: 16px
+
+.modal-panel-body
+    flex: 1
+    min-height: 0
+    padding: 25px 12px 25px 20px
+    border-right: 8px solid transparent
+    overflow-y: auto
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+    &::-webkit-scrollbar
+        width: 4px
+
+    &::-webkit-scrollbar-track
+        background: transparent
+
+    &::-webkit-scrollbar-thumb
+        background: $c-border
+        border-radius: 2px
+
+.modal-panel--info .modal-panel-body
+    padding: 0 12px 25px 20px
+
+// ===== Left Panel: Info =====
+
+.modal-section
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+.modal-status
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    gap: 16px
+
+.status-badge
+    padding: 5px 10px
+    border-radius: 4px
+    font-size: 13px
+    font-weight: 500
+
+    &--open
+        background: #E2F9E9
+        outline: 1px solid #D5F4DE
+        outline-offset: -1px
+        color: #3AB88D
+
+.modal-order-row
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.modal-order-number
+    color: $c-text
+    font-size: 18px
+    font-weight: 500
+
+.modal-state
+    display: flex
+    align-items: center
+    gap: 4px
+
+.modal-state-dot
+    width: 8px
+    height: 8px
+    border-radius: 50%
+
+    &--green
+        background: #3AB88D
+
+.modal-state-label
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+
+// ===== Info Blocks =====
+
+.info-block
+    background: $c-bg
+    border-radius: 5px
+    padding: 16px
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+.info-block-title
+    color: $c-text
+    font-size: 16px
+    font-weight: 500
+
+.info-row
+    display: flex
+    flex-direction: column
+    gap: 4px
+    padding-bottom: 6px
+    border-bottom: 0.5px solid $c-border
+
+    &:last-child
+        border-bottom: none
+        padding-bottom: 0
+
+    &--actions
+        flex-direction: row
+        justify-content: space-between
+        align-items: flex-end
+
+    &--edit
+        flex-direction: row
+        justify-content: space-between
+        align-items: flex-end
+
+.info-col
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.info-label
+    color: #828594
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.info-value
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+    &--link
+        color: #4699F1
+
+.info-actions
+    display: flex
+    gap: 10px
+
+// ===== Manager =====
+
+.modal-manager
+    display: flex
+    align-items: center
+    gap: 12px
+
+.modal-manager-avatar
+    width: 43px
+    height: 43px
+    border-radius: 5px
+    object-fit: cover
+
+.modal-manager-info
+    display: flex
+    flex-direction: column
+    gap: 2px
+
+.modal-manager-name
+    color: $c-text
+    font-size: 16px
+    font-weight: 500
+
+.modal-manager-role
+    color: #959595
+    font-size: 13px
+    font-weight: 400
+    line-height: 18px
+
+// ===== Docs Panel =====
+
+.modal-docs-list
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+.modal-doc-item
+    display: flex
+    align-items: flex-start
+    gap: 6px
+
+.modal-doc-info
+    display: flex
+    flex-direction: column
+
+.modal-doc-name
+    color: #212126
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.modal-doc-size
+    color: #828282
+    font-size: 13px
+    font-weight: 400
+    line-height: 20px
+
+// ===== History Panel =====
+
+.modal-history-header
+    display: flex
+    align-items: center
+    gap: 4px
+
+.modal-history-title
+    color: $c-text
+    font-size: 16px
+    font-weight: 500
+
+.modal-history-count
+    color: #828282
+    font-size: 16px
+    font-weight: 500
+
+// ===== Comment Input =====
+
+.modal-comment-new
+    display: flex
+    flex-direction: column
+    gap: 8px
+    padding: 16px
+    border-radius: 5px
+    background: $c-bg
+    outline: 1px solid #E2E2E2
+    outline-offset: -1px
+    transition: outline-color 0.15s, background 0.15s
+
+    &:hover
+        background: transparent
+        outline-color: #98CAFF
+
+    &:focus-within
+        background: transparent
+        outline-color: #4D79FF
+
+.modal-comment-input
+    width: 100%
+    border: none
+    outline: none
+    background: transparent
+    font-family: inherit
+    font-size: 14px
+    color: $c-text
+    resize: none
+    min-height: 60px
+
+    &::placeholder
+        color: #828594
+
+.modal-comment-new-bottom
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    gap: 8px
+
+.modal-comment-divider
+    width: 100%
+    height: 0
+    border-bottom: 1px solid $c-border-soft
+
+.modal-comment-send
+    color: #828594
+    font-size: 14px
+    font-weight: 400
+    background: none
+    border: none
+    cursor: pointer
+    padding: 0
+    transition: color 0.15s
+
+.modal-comment-new:focus-within .modal-comment-send
+    color: #4D79FF
+
+// ===== Comment =====
+
+.modal-comment
+    display: flex
+    flex-direction: column
+    gap: 8px
+    padding-bottom: 16px
+    border-bottom: 0.5px solid $c-border
+
+.modal-comment-header
+    display: flex
+    align-items: center
+    gap: 8px
+
+.modal-comment-avatar
+    width: 30px
+    height: 30px
+    border-radius: 15px
+    object-fit: cover
+
+.modal-comment-author
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+
+.modal-comment-bubble
+    background: $c-bg
+    border-radius: 5px
+    padding: 16px
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.modal-comment-time
+    display: flex
+    align-items: center
+    gap: 5px
+    color: #828282
+    font-size: 14px
+    font-weight: 400
+
+// ===== Bottom Actions =====
+
+.modal-actions
+    display: flex
+    gap: 8px
+    padding: 10px 20px 20px 20px
+    background: $c-white
+    box-shadow: -2px -4px 15px rgba(149, 149, 149, 0.10)
+
+.modal-btn
+    flex: 1
+    height: 40px
+    padding: 12px 24px
+    border-radius: 8px
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+    cursor: pointer
+    border: none
+    font-family: inherit
+    font-size: 14px
+    font-weight: 500
+    line-height: 20px
+    white-space: nowrap
+
+    &--primary
+        background: #E10101
+        color: $c-white
+
+        &:hover
+            background: #C02323
+
+    &--secondary
+        background: $c-bg
+        color: $c-text
+        font-weight: 400
+
+        &:hover
+            background: #EAEAEA
+
+    &:disabled
+        opacity: 0.60
+
+// ===== Editable Field =====
+
+.editable-field
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: flex-end
+    padding-bottom: 6px
+    border-bottom: 0.5px solid $c-border
+
+    &:last-child
+        border-bottom: none
+        padding-bottom: 0
+
+    &--editing
+        padding: 8px
+        background: $c-white
+        border-radius: 5px
+        border-bottom: none
+        align-items: center
+
+    &--white
+        background: $c-white
+        border-radius: 5px
+        padding: 8px
+        border-bottom: none
+
+        .editable-field__label
+            white-space: nowrap
+
+.editable-field__display
+    display: flex
+    flex-direction: column
+    gap: 4px
+    cursor: pointer
+
+.editable-field__content
+    display: flex
+    flex-direction: column
+    gap: 4px
+    flex: 1
+    min-width: 0
+
+.editable-field__label
+    color: #828594
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+.editable-field__value
+    color: $c-text
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+
+    &--link
+        color: #4699F1
+
+.editable-field__icon
+    cursor: pointer
+    flex-shrink: 0
+    display: flex
+    align-items: center
+
+    svg path
+        stroke: #959595
+
+    &:hover svg path
+        stroke: #4D79FF
+
+.editable-field__input
+    border: none
+    outline: none
+    background: transparent
+    font-family: inherit
+    font-size: 14px
+    color: $c-text
+    line-height: 20px
+    padding: 0
+    width: 100%
+
+.editable-field__actions
+    display: flex
+    gap: 10px
+    flex-shrink: 0
+
+.editable-field__action
+    background: none
+    border: none
+    cursor: pointer
+    padding: 0
+    display: flex
+    align-items: center
+
+    &:hover svg path
+        stroke: $c-text

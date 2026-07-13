@@ -20,6 +20,7 @@
 <script setup>
 import { useAuth } from '../../composables/useAuth'
 
+import logoSrc from '../../../images/logo.png'
+
 const { user } = useAuth()
-const logoSrc = '/images/logo.png'
 </script>
