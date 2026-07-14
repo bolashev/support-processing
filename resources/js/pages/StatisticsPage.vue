@@ -60,8 +60,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import MainLayout from '../components/layout/MainLayout.vue'
-import Icon from '../components/ui/Icon.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import Icon from '@/components/ui/Icon.vue'
 
 const route = useRoute()
 

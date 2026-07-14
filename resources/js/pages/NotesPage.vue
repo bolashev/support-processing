@@ -19,23 +19,14 @@
                     </div>
 
                     <div class="notes-panel-body">
-                        <div class="comment-form notes-new-form">
-                            <textarea
-                                ref="newNoteRef"
-                                v-model="newNoteText"
-                                class="comment-input notes-new-textarea"
-                                placeholder="Новая заметка..."
-                                rows="3"
-                            ></textarea>
-                            <div class="comment-form-bottom">
-                                <div class="comment-divider" />
-                                <button
-                                    class="comment-send notes-add-btn"
-                                    :disabled="!newNoteText.trim()"
-                                    @click="addNote"
-                                >Добавить</button>
-                            </div>
-                        </div>
+                        <CommentForm
+                            v-model="newNoteText"
+                            class="notes-new-form"
+                            placeholder="Новая заметка..."
+                            submit-label="Добавить"
+                            :rows="3"
+                            @submit="addNote"
+                        />
 
                         <div class="notes-list">
                             <div
@@ -66,10 +57,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import MainLayout from '../components/layout/MainLayout.vue'
-import Icon from '../components/ui/Icon.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import Icon from '@/components/ui/Icon.vue'
+import CommentForm from '@/components/ui/CommentForm.vue'
 
-const newNoteRef = ref(null)
 const newNoteText = ref('')
 
 const notes = ref([

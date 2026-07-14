@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { managers as managersApi } from '../client'
+import { managers as managersApi } from '@/client'
 
 export const useManagersStore = defineStore('managers', () => {
     const items = ref([])

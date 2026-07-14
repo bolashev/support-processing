@@ -44,11 +44,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import DatePickerPopup from './DatePicker/DatePickerPopup.vue'
 import { useDatePicker } from './DatePicker/useDatePicker'
+import { useClickOutside } from '@/composables/useClickOutside'
 
 const props = defineProps({
     modelValue: { type: String, default: 'today' },
@@ -105,13 +106,9 @@ function apply() {
     close()
 }
 
-function onClickOutside(e) {
-    if (!showPicker.value) return
-    if (containerRef.value?.contains(e.target)) return
-    if (e.target.closest('.dp')) return
-    close()
-}
-
-onMounted(() => document.addEventListener('click', onClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
+useClickOutside(containerRef, () => {
+    if (showPicker.value) close()
+}, {
+    ignore: (e) => e.target.closest('.dp'),
+})
 </script>

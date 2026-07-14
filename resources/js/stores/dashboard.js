@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { dashboard as dashboardApi } from '../client'
+import { dashboard as dashboardApi } from '@/client'
 
 export const useDashboardStore = defineStore('dashboard', () => {
     const counters = ref({

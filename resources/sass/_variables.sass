@@ -52,6 +52,29 @@ $content-w: 1391px
 $header-w: 1360px
 $column-w: 390px
 
+// typography tokens
+$fs-badge: 13px
+$fs-body: 14px
+$fs-heading: 16px
+$fs-title: 24px
+$fw-regular: 400
+$fw-medium: 500
+$fw-semibold: 600
+$lh-body: 20px
+
+// spacing tokens
+$gap-xs: 4px
+$gap-sm: 8px
+$gap-md: 16px
+$gap-lg: 20px
+$p-block: 16px
+
+// radius tokens
+$radius-sm: 4px
+$radius-md: 5px
+$radius-lg: 8px
+$radius-pill: 10px
+
 // mixins
 =flex-col
     display: flex
@@ -95,3 +118,37 @@ $column-w: 390px
     &.active, &.nav-tab-active
         border-bottom-color: $c-text
         color: $c-text
+
+// utility mixins
+=flex-between
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+=scrollbar($width: 4px, $color: $c-border, $radius: 2px)
+    &::-webkit-scrollbar
+        width: $width
+    &::-webkit-scrollbar-track
+        background: transparent
+    &::-webkit-scrollbar-thumb
+        background: $color
+        border-radius: $radius
+
+=status-badge-base
+    padding: 5px 10px
+    border-radius: $radius-sm
+    font-size: $fs-badge
+    font-weight: $fw-medium
+    white-space: nowrap
+
+=label-text
+    color: $c-muted-soft
+    font-size: $fs-body
+    font-weight: $fw-regular
+    line-height: $lh-body
+
+=value-text
+    color: $c-text
+    font-size: $fs-body
+    font-weight: $fw-regular
+    line-height: $lh-body

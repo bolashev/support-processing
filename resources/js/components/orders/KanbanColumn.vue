@@ -32,7 +32,7 @@
 
 <script setup>
 import OrderCard from './OrderCard.vue'
-import SortIcon from '../ui/SortIcon.vue'
+import SortIcon from '@/components/ui/SortIcon.vue'
 
 defineProps({
     title: { type: String, required: true },

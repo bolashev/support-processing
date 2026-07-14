@@ -52,7 +52,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import Icon from '../ui/Icon.vue'
+import Icon from '@/components/ui/Icon.vue'
 
 const props = defineProps({
     order: { type: Object, required: true },

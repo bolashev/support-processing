@@ -12,13 +12,7 @@
                 <span class="modal-history-count">({{ comments.length }})</span>
             </div>
 
-            <div class="comment-form">
-                <textarea class="comment-input" placeholder="Написать комментарий..."></textarea>
-                <div class="comment-form-bottom">
-                    <div class="comment-divider"></div>
-                    <button class="comment-send">Отправить</button>
-                </div>
-            </div>
+            <CommentForm v-model="newComment" placeholder="Написать комментарий..." @submit="sendComment" />
 
             <div
                 v-for="comment in comments"
@@ -42,7 +36,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import Icon from '@/components/ui/Icon.vue'
+import CommentForm from '@/components/ui/CommentForm.vue'
 
 defineProps({
     comments: {
@@ -65,4 +61,12 @@ defineProps({
         ],
     },
 })
+
+const newComment = ref('')
+
+function sendComment() {
+    if (!newComment.value.trim()) return
+    // TODO: интеграция с API
+    newComment.value = ''
+}
 </script>

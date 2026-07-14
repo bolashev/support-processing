@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import ManagerDropdown from '../ui/ManagerDropdown.vue'
-import PeriodSwitcher from '../ui/PeriodSwitcher.vue'
-import Icon from '../ui/Icon.vue'
+import ManagerDropdown from '@/components/ui/ManagerDropdown.vue'
+import PeriodSwitcher from '@/components/ui/PeriodSwitcher.vue'
+import Icon from '@/components/ui/Icon.vue'
 
 defineProps({
     managers: { type: Array, default: () => [] },

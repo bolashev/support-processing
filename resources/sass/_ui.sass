@@ -113,16 +113,7 @@
     overflow-y: auto
     flex-direction: column
     display: flex
-
-    &::-webkit-scrollbar
-        width: 6px
-
-    &::-webkit-scrollbar-track
-        background: transparent
-
-    &::-webkit-scrollbar-thumb
-        background: $c-scrollbar
-        border-radius: 3px
+    +scrollbar(6px, $c-scrollbar, 3px)
 
 .manager-dropdown-item
     width: 100%
@@ -200,16 +191,10 @@
     min-width: 0
 
 .editable-field__label
-    color: $c-muted-soft
-    font-size: 14px
-    font-weight: 400
-    line-height: 20px
+    +label-text
 
 .editable-field__value
-    color: $c-text
-    font-size: 14px
-    font-weight: 400
-    line-height: 20px
+    +value-text
 
     &--link
         color: $c-status-paid

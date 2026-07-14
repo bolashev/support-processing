@@ -42,10 +42,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import MainLayout from '../components/layout/MainLayout.vue'
-import IncomingFilter from '../components/orders/IncomingFilter.vue'
-import KanbanColumn from '../components/orders/KanbanColumn.vue'
-import OrderModal from '../components/orders/OrderModal.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import IncomingFilter from '@/components/orders/IncomingFilter.vue'
+import KanbanColumn from '@/components/orders/KanbanColumn.vue'
+import OrderModal from '@/components/orders/OrderModal.vue'
 
 const selectedOrderId = ref(null)
 const shippedSortDirection = ref('none')

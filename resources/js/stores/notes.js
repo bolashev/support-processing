@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { notes as notesApi } from '../client'
+import { notes as notesApi } from '@/client'
 
 export const useNotesStore = defineStore('notes', () => {
     const items = ref([])

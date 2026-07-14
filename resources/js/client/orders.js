@@ -1,4 +1,4 @@
-import { api } from '../bootstrap'
+import { api } from '@/bootstrap'
 
 export const orders = {
     getList(params = {}) {

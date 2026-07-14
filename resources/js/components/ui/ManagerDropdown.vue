@@ -36,8 +36,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import Icon from './Icon.vue'
+import { useClickOutside } from '@/composables/useClickOutside'
 
 const props = defineProps({
     items: { type: Array, default: () => [] },
@@ -89,12 +90,5 @@ function toggle() {
     open.value = !open.value
 }
 
-function onClickOutside(e) {
-    if (open.value && containerRef.value && !containerRef.value.contains(e.target)) {
-        open.value = false
-    }
-}
-
-onMounted(() => document.addEventListener('click', onClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
+useClickOutside(containerRef, () => { open.value = false })
 </script>

@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { useAuth } from '../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
 
 import logoSrc from '../../../images/logo.png'
 

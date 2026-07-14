@@ -16,8 +16,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import SearchInput from '../ui/SearchInput.vue'
-import ManagerDropdown from '../ui/ManagerDropdown.vue'
+import SearchInput from '@/components/ui/SearchInput.vue'
+import ManagerDropdown from '@/components/ui/ManagerDropdown.vue'
 
 const selectedIds = ref([1])
 const searchValue = ref('')

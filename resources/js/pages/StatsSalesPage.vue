@@ -32,14 +32,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import StatsFilter from '../components/statistics/StatsFilter.vue'
-import StatsTable from '../components/ui/StatsTable.vue'
+import StatsFilter from '@/components/statistics/StatsFilter.vue'
+import StatsTable from '@/components/ui/StatsTable.vue'
+import { useSort } from '@/composables/useSort'
 
 const period = ref('today')
 const dateRange = ref(null)
 const selectedManagerIds = ref([])
-const sortKey = ref(null)
-const sortDirection = ref('none')
+
+const { sortKey, sortDirection, toggleSort } = useSort()
 
 const columns = [
     { key: 'name', label: 'ФИО менеджера', sortable: true },
@@ -64,15 +65,6 @@ const managers = [
     { id: 11, name: 'Лебедева Ольга Николаевна', period: '01.12.25 — н.в.', total: 280, processing: 190, avg: 25 },
     { id: 12, name: 'Григорьев Максим Александрович', period: '01.12.25 — н.в.', total: 350, processing: 240, avg: 29 },
 ]
-
-function toggleSort(key) {
-    if (sortKey.value === key) {
-        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
-    } else {
-        sortKey.value = key
-        sortDirection.value = 'desc'
-    }
-}
 
 const filteredManagers = computed(() => {
     let result = selectedManagerIds.value.length === 0

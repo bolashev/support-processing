@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { archive as archiveApi } from '../client'
+import { archive as archiveApi } from '@/client'
 
 export const useArchiveStore = defineStore('archive', () => {
     const items = ref([])

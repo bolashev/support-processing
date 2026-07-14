@@ -24,67 +24,29 @@
                 <span class="section-title-count">{{ filteredOrders.length }}</span>
             </div>
 
-            <div v-if="filteredOrders.length" class="stats-table-card">
-                <table class="stats-table">
-                    <colgroup>
-                        <col style="width: 180px" />
-                        <col style="width: 180px" />
-                        <col style="width: 180px" />
-                        <col style="width: 180px" />
-                        <col style="width: 220px" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="stats-col-header"><span>Статус</span></div>
-                            </th>
-                            <th>
-                                <div class="stats-col-header"><span>Номер заказа</span></div>
-                            </th>
-                            <th>
-                                <div class="stats-col-header stats-col-header--sortable" @click="toggleSort('processingTime')">
-                                    <span>Время обработки</span>
-                                    <SortIcon
-                                        v-if="sortKey === 'processingTime'"
-                                        :direction="sortDirection"
-                                        color="#878B99"
-                                    />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="stats-col-header stats-col-header--sortable" @click="toggleSort('date')">
-                                    <span>Дата и время</span>
-                                    <SortIcon
-                                        v-if="sortKey === 'date'"
-                                        :direction="sortDirection"
-                                        color="#878B99"
-                                    />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="stats-col-header"><span>Менеджер заявки</span></div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="order in filteredOrders" :key="order.id">
-                            <td>
-                                <span class="archive-status-badge">{{ order.status }}</span>
-                            </td>
-                            <td>Заказ № {{ order.number }}</td>
-                            <td>{{ order.processingTime }}</td>
-                            <td>{{ order.date }} · {{ order.time }}</td>
-                            <td>
-                                <div class="archive-manager">
-                                    <Icon name="user" :size="16" color="#282828" />
-                                    <span>{{ order.manager }}</span>
-                                    <span v-if="order.isSelf" class="archive-manager-self">(Вы)</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <StatsTable
+                v-if="filteredOrders.length"
+                :columns="columns"
+                :sort-key="sortKey"
+                :sort-direction="sortDirection"
+                @sort="toggleSort"
+            >
+                <tr v-for="order in filteredOrders" :key="order.id">
+                    <td>
+                        <span class="archive-status-badge">{{ order.status }}</span>
+                    </td>
+                    <td>Заказ № {{ order.number }}</td>
+                    <td>{{ order.processingTime }}</td>
+                    <td>{{ order.date }} · {{ order.time }}</td>
+                    <td>
+                        <div class="archive-manager">
+                            <Icon name="user" :size="16" color="#282828" />
+                            <span>{{ order.manager }}</span>
+                            <span v-if="order.isSelf" class="archive-manager-self">(Вы)</span>
+                        </div>
+                    </td>
+                </tr>
+            </StatsTable>
 
             <div v-else class="archive-empty">
                 <span v-if="searchValue || selectedManagerIds.length">Ничего не найдено</span>
@@ -96,19 +58,28 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import MainLayout from '../components/layout/MainLayout.vue'
-import ManagerDropdown from '../components/ui/ManagerDropdown.vue'
-import PeriodSwitcher from '../components/ui/PeriodSwitcher.vue'
-import SearchInput from '../components/ui/SearchInput.vue'
-import Icon from '../components/ui/Icon.vue'
-import SortIcon from '../components/ui/SortIcon.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import ManagerDropdown from '@/components/ui/ManagerDropdown.vue'
+import PeriodSwitcher from '@/components/ui/PeriodSwitcher.vue'
+import SearchInput from '@/components/ui/SearchInput.vue'
+import Icon from '@/components/ui/Icon.vue'
+import StatsTable from '@/components/ui/StatsTable.vue'
+import { useSort } from '@/composables/useSort'
 
 const searchValue = ref('')
 const selectedManagerIds = ref([])
 const period = ref('today')
 const dateRange = ref(null)
-const sortKey = ref(null)
-const sortDirection = ref('asc')
+
+const { sortKey, sortDirection, toggleSort } = useSort()
+
+const columns = [
+    { key: 'status', label: 'Статус', width: '180px' },
+    { key: 'number', label: 'Номер заказа', width: '180px' },
+    { key: 'processingTime', label: 'Время обработки', width: '180px', sortable: true },
+    { key: 'dateSort', label: 'Дата и время', width: '180px', sortable: true },
+    { key: 'manager', label: 'Менеджер заявки', width: '220px' },
+]
 
 const managers = [
     { id: 1, name: 'Зайцева Екатерина Сергеевна' },
@@ -118,27 +89,18 @@ const managers = [
 ]
 
 const orders = [
-    { id: 1, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154204', processingTime: '01:29 ч.', processingMinutes: 89, date: '17 марта', time: '12:11', dateSort: '2026-03-17 12:11', manager: '(Вы)', isSelf: true },
+    { id: 1, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154204', processingTime: '01:29 ч.', processingMinutes: 89, date: '17 марта', time: '12:11', dateSort: '2026-03-17 12:11', manager: 'Дарья Сергеевна', isSelf: true },
     { id: 2, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154205', processingTime: '03:00 ч.', processingMinutes: 180, date: '15 марта', time: '19:11', dateSort: '2026-03-15 19:11', manager: 'Илья Лукинов', isSelf: false },
     { id: 3, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154206', processingTime: '03:00 ч.', processingMinutes: 180, date: '15 марта', time: '13:55', dateSort: '2026-03-15 13:55', manager: 'Константин Константино...', isSelf: false },
     { id: 4, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154207', processingTime: '4 мин.', processingMinutes: 4, date: '15 марта', time: '13:55', dateSort: '2026-03-15 13:55', manager: 'Валерий Статов', isSelf: false },
 ]
-
-function toggleSort(key) {
-    if (sortKey.value === key) {
-        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
-    } else {
-        sortKey.value = key
-        sortDirection.value = 'desc'
-    }
-}
 
 const filteredOrders = computed(() => {
     let result = [...orders]
 
     if (selectedManagerIds.value.length > 0) {
         result = result.filter(o => {
-            const manager = managers.find(m => m.name === o.manager || (o.isSelf && m.name === 'Вы'))
+            const manager = managers.find(m => m.name === o.manager)
             return manager && selectedManagerIds.value.includes(manager.id)
         })
     }
@@ -157,9 +119,12 @@ const filteredOrders = computed(() => {
             if (sortKey.value === 'processingTime') {
                 valA = a.processingMinutes
                 valB = b.processingMinutes
-            } else if (sortKey.value === 'date') {
+            } else if (sortKey.value === 'dateSort') {
                 valA = a.dateSort
                 valB = b.dateSort
+            } else {
+                valA = a[sortKey.value]
+                valB = b[sortKey.value]
             }
             if (valA < valB) return sortDirection.value === 'asc' ? -1 : 1
             if (valA > valB) return sortDirection.value === 'asc' ? 1 : -1
