@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
+ * @mixin \Eloquent
  * @property int $id
  * @property int|null $bitrix_id
  * @property string $name
