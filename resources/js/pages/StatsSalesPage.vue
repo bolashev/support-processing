@@ -2,13 +2,19 @@
     <div class="stats-page-content">
         <StatsFilter
             v-model="period"
+            v-model:date-range="dateRange"
             :managers="managers"
             :selected-manager-ids="selectedManagerIds"
             @update:selected-manager-ids="selectedManagerIds = $event"
             @export="onExport"
         />
 
-        <StatsTable :columns="columns">
+        <StatsTable
+            :columns="columns"
+            :sort-key="sortKey"
+            :sort-direction="sortDirection"
+            @sort="toggleSort"
+        >
             <tr v-for="m in filteredManagers" :key="m.id">
                 <td>
                     <span class="stats-manager-name">{{ m.name }}</span>
@@ -30,15 +36,18 @@ import StatsFilter from '../components/statistics/StatsFilter.vue'
 import StatsTable from '../components/ui/StatsTable.vue'
 
 const period = ref('today')
+const dateRange = ref(null)
 const selectedManagerIds = ref([])
+const sortKey = ref(null)
+const sortDirection = ref('none')
 
 const columns = [
-    { key: 'name', label: 'ФИО менеджера' },
-    { key: 'period', label: 'Период активности', sorted: true },
-    { key: 'total', label: 'Всего отгружено' },
-    { key: 'processing', label: 'Через процессинг' },
-    { key: 'percent', label: '% Процессинга' },
-    { key: 'avg', label: 'Ср. в день' },
+    { key: 'name', label: 'ФИО менеджера', sortable: true },
+    { key: 'period', label: 'Период активности', sortable: true },
+    { key: 'total', label: 'Всего отгружено', sortable: true },
+    { key: 'processing', label: 'Через процессинг', sortable: true },
+    { key: 'percent', label: '% Процессинга', sortable: true },
+    { key: 'avg', label: 'Ср. в день', sortable: true },
 ]
 
 const managers = [
@@ -56,9 +65,40 @@ const managers = [
     { id: 12, name: 'Григорьев Максим Александрович', period: '01.12.25 — н.в.', total: 350, processing: 240, avg: 29 },
 ]
 
+function toggleSort(key) {
+    if (sortKey.value === key) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortKey.value = key
+        sortDirection.value = 'desc'
+    }
+}
+
 const filteredManagers = computed(() => {
-    if (selectedManagerIds.value.length === 0) return managers
-    return managers.filter(m => selectedManagerIds.value.includes(m.id))
+    let result = selectedManagerIds.value.length === 0
+        ? [...managers]
+        : managers.filter(m => selectedManagerIds.value.includes(m.id))
+
+    if (sortKey.value) {
+        result.sort((a, b) => {
+            let valA, valB
+            if (sortKey.value === 'percent') {
+                valA = a.total ? (a.processing / a.total) : 0
+                valB = b.total ? (b.processing / b.total) : 0
+            } else {
+                valA = a[sortKey.value]
+                valB = b[sortKey.value]
+            }
+            if (typeof valA === 'string') {
+                return sortDirection.value === 'asc'
+                    ? valA.localeCompare(valB)
+                    : valB.localeCompare(valA)
+            }
+            return sortDirection.value === 'asc' ? valA - valB : valB - valA
+        })
+    }
+
+    return result
 })
 
 function percent(m) {

@@ -37,10 +37,36 @@
                     @save="onFieldSave('deliveryMethod', $event)"
                 />
 
-                <EditableField
-                    v-model="orderData.reserveDates"
-                    label="Даты резерва:"
-                    @save="onFieldSave('reserveDates', $event)"
+                <div
+                    ref="dateFieldRef"
+                    class="editable-field"
+                    @click="openPicker(dateFieldRef)"
+                >
+                    <div class="editable-field__content">
+                        <span class="editable-field__label">Даты резерва:</span>
+                        <span class="editable-field__value">{{ displayReserveDates }}</span>
+                    </div>
+                    <span class="editable-field__icon">
+                        <Icon name="edit" :size="16" color="#959595" />
+                    </span>
+                </div>
+
+                <DatePickerPopup
+                    :visible="showPicker"
+                    :left-year="leftYear"
+                    :left-month="leftMonth"
+                    :right-year="rightYear"
+                    :right-month="rightMonth"
+                    :selected-start="selectedStart"
+                    :selected-end="selectedEnd"
+                    :hover-date="hoverDate"
+                    :popup-position="popupPosition"
+                    @close="close"
+                    @select="onSelectDate"
+                    @hover="onHoverDate"
+                    @prev="goPrev"
+                    @next="goNext"
+                    @apply="applyDates"
                 />
 
                 <div class="info-row">
@@ -110,11 +136,49 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import EditableField from '@/components/ui/EditableField.vue'
+import Icon from '@/components/ui/Icon.vue'
+import DatePickerPopup from '@/components/ui/DatePicker/DatePickerPopup.vue'
+import { useDatePicker } from '@/components/ui/DatePicker/useDatePicker'
 
 const props = defineProps({
     orderData: { type: Object, required: true },
 })
+
+const dateFieldRef = ref(null)
+
+const {
+    showPicker, selectedStart, selectedEnd, hoverDate, popupPosition,
+    leftMonth, leftYear, rightMonth, rightYear,
+    open, close, goPrev, goNext, onSelectDate, onHoverDate, getResult,
+} = useDatePicker()
+
+const displayReserveDates = computed(() => {
+    const d = props.orderData.reserveDates
+    if (d?.start && d?.end) {
+        const start = format(d.start, 'dd.MM.yyyy', { locale: ru })
+        const end = format(d.end, 'dd.MM.yyyy', { locale: ru })
+        return `${start} — ${end}`
+    }
+    if (d?.start) {
+        return format(d.start, 'dd.MM.yyyy', { locale: ru })
+    }
+    return 'Не указано'
+})
+
+function openPicker(el) {
+    open(el, props.orderData.reserveDates)
+}
+
+function applyDates() {
+    const result = getResult()
+    props.orderData.reserveDates = result
+    onFieldSave('reserveDates', result)
+    close()
+}
 
 const onFieldSave = (field, value) => {
     console.log(`[OrderModal] Field "${field}" saved:`, value)

@@ -9,7 +9,7 @@
                 </div>
                 <div v-if="sortable" class="col-sort" @click="$emit('sort')">
                     <span class="col-sort-label">{{ sortLabel }}</span>
-                    <Icon name="sort" :size="16" color="#959595" />
+                    <SortIcon v-if="sortDirection !== 'none'" :direction="sortDirection" color="#878B99" />
                 </div>
             </div>
             <div class="col-line" />
@@ -32,7 +32,7 @@
 
 <script setup>
 import OrderCard from './OrderCard.vue'
-import Icon from '../ui/Icon.vue'
+import SortIcon from '../ui/SortIcon.vue'
 
 defineProps({
     title: { type: String, required: true },
@@ -40,6 +40,7 @@ defineProps({
     cards: { type: Array, default: () => [] },
     sortable: { type: Boolean, default: false },
     sortLabel: { type: String, default: 'По дате' },
+    sortDirection: { type: String, default: 'none' },
 })
 
 defineEmits(['cardClick', 'sort'])

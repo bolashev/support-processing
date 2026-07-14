@@ -165,6 +165,16 @@
     gap: 4px
     display: flex
 
+.stats-period-chevron
+    width: 20px
+    height: 20px
+    transition: transform 0.2s ease
+    transform-origin: center
+    display: flex
+
+    &--open
+        transform: rotate(180deg)
+
 // экспорт
 
 .stats-export
@@ -245,6 +255,14 @@
     align-items: center
     gap: 8px
     display: flex
+    user-select: none
+
+.stats-col-header--sortable
+    cursor: pointer
+    color: $c-status-paid
+
+    &:hover
+        color: $c-text
 
 .stats-sort-icon
     flex-shrink: 0

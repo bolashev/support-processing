@@ -7,14 +7,16 @@
             <thead>
                 <tr>
                     <th v-for="col in columns" :key="col.key">
-                        <div class="stats-col-header">
+                        <div
+                            class="stats-col-header"
+                            :class="{ 'stats-col-header--sortable': col.sortable }"
+                            @click="col.sortable && $emit('sort', col.key)"
+                        >
                             <span>{{ col.label }}</span>
-                            <Icon
-                                v-if="col.sorted"
-                                name="sort"
-                                :size="16"
-                                class="stats-sort-icon"
-                                :color="col.sorted ? '#878B99' : '#959595'"
+                            <SortIcon
+                                v-if="col.sortable && sortKey === col.key"
+                                :direction="sortDirection"
+                                color="#878B99"
                             />
                         </div>
                     </th>
@@ -28,10 +30,14 @@
 </template>
 
 <script setup>
-import Icon from '../ui/Icon.vue'
+import SortIcon from './SortIcon.vue'
 
 defineProps({
     columns: { type: Array, required: true },
     variant: { type: String, default: 'default' },
+    sortKey: { type: String, default: null },
+    sortDirection: { type: String, default: 'none' },
 })
+
+defineEmits(['sort'])
 </script>

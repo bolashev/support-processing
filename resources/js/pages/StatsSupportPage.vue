@@ -2,6 +2,7 @@
     <div class="stats-page-content">
         <StatsFilter
             v-model="period"
+            v-model:date-range="dateRange"
             :managers="managers"
             :selected-manager-ids="selectedManagerIds"
             manager-prefix="Менеджер:"
@@ -9,7 +10,13 @@
             @export="onExport"
         />
 
-        <StatsTable :columns="columns" variant="support">
+        <StatsTable
+            :columns="columns"
+            variant="support"
+            :sort-key="sortKey"
+            :sort-direction="sortDirection"
+            @sort="toggleSort"
+        >
             <tr v-for="m in filteredManagers" :key="m.id">
                 <td>
                     <span class="stats-manager-name">{{ m.name }}</span>
@@ -32,26 +39,66 @@ import StatsFilter from '../components/statistics/StatsFilter.vue'
 import StatsTable from '../components/ui/StatsTable.vue'
 
 const period = ref('today')
+const dateRange = ref(null)
 const selectedManagerIds = ref([])
+const sortKey = ref(null)
+const sortDirection = ref('none')
 
 const columns = [
-    { key: 'name', label: 'ФИО менеджера', width: '180px' },
-    { key: 'accepted', label: 'Принято заявок', width: '154px' },
-    { key: 'receiveTime', label: 'Время на прием', width: '135px' },
-    { key: 'returnWork', label: 'Работа с возвратом', width: '157px' },
-    { key: 'shipmentWork', label: 'Работа с отгрузкой', width: '157px' },
-    { key: 'lazarRegistrations', label: 'Регистраций в Лазарь', width: '171px' },
+    { key: 'name', label: 'ФИО менеджера', width: '180px', sortable: true },
+    { key: 'accepted', label: 'Принято заявок', width: '154px', sortable: true },
+    { key: 'receiveTime', label: 'Время на прием', width: '135px', sortable: true },
+    { key: 'returnWork', label: 'Работа с возвратом', width: '157px', sortable: true },
+    { key: 'shipmentWork', label: 'Работа с отгрузкой', width: '157px', sortable: true },
+    { key: 'lazarRegistrations', label: 'Регистраций в Лазарь', width: '171px', sortable: true },
 ]
 
 const managers = [
-    { id: 1, name: 'Иванов Иван Иванович', accepted: 38, receiveTime: '15 мин.', receiveTimeAlert: false, returnWork: '1:30 ч.', shipmentWork: '4ч 20м', lazarRegistrations: 12 },
-    { id: 2, name: 'Петрова Анна Сергеевна', accepted: 43, receiveTime: '31 мин.', receiveTimeAlert: true, returnWork: '1:05 ч.', shipmentWork: '3ч 30м', lazarRegistrations: 15 },
-    { id: 3, name: 'Кузнецова Мария Александровна', accepted: 51, receiveTime: '15 мин.', receiveTimeAlert: false, returnWork: '1:15 ч.', shipmentWork: '5ч 10м', lazarRegistrations: 8 },
+    { id: 1, name: 'Иванов Иван Иванович', accepted: 38, receiveTime: '15 мин.', receiveTimeAlert: false, receiveTimeMinutes: 15, returnWork: '1:30 ч.', returnWorkMinutes: 90, shipmentWork: '4ч 20м', shipmentWorkMinutes: 260, lazarRegistrations: 12 },
+    { id: 2, name: 'Петрова Анна Сергеевна', accepted: 43, receiveTime: '31 мин.', receiveTimeAlert: true, receiveTimeMinutes: 31, returnWork: '1:05 ч.', returnWorkMinutes: 65, shipmentWork: '3ч 30м', shipmentWorkMinutes: 210, lazarRegistrations: 15 },
+    { id: 3, name: 'Кузнецова Мария Александровна', accepted: 51, receiveTime: '15 мин.', receiveTimeAlert: false, receiveTimeMinutes: 15, returnWork: '1:15 ч.', returnWorkMinutes: 75, shipmentWork: '5ч 10м', shipmentWorkMinutes: 310, lazarRegistrations: 8 },
 ]
 
+function toggleSort(key) {
+    if (sortKey.value === key) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortKey.value = key
+        sortDirection.value = 'desc'
+    }
+}
+
 const filteredManagers = computed(() => {
-    if (selectedManagerIds.value.length === 0) return managers
-    return managers.filter(m => selectedManagerIds.value.includes(m.id))
+    let result = selectedManagerIds.value.length === 0
+        ? [...managers]
+        : managers.filter(m => selectedManagerIds.value.includes(m.id))
+
+    if (sortKey.value) {
+        result.sort((a, b) => {
+            let valA, valB
+            if (sortKey.value === 'receiveTime') {
+                valA = a.receiveTimeMinutes
+                valB = b.receiveTimeMinutes
+            } else if (sortKey.value === 'returnWork') {
+                valA = a.returnWorkMinutes
+                valB = b.returnWorkMinutes
+            } else if (sortKey.value === 'shipmentWork') {
+                valA = a.shipmentWorkMinutes
+                valB = b.shipmentWorkMinutes
+            } else {
+                valA = a[sortKey.value]
+                valB = b[sortKey.value]
+            }
+            if (typeof valA === 'string') {
+                return sortDirection.value === 'asc'
+                    ? valA.localeCompare(valB)
+                    : valB.localeCompare(valA)
+            }
+            return sortDirection.value === 'asc' ? valA - valB : valB - valA
+        })
+    }
+
+    return result
 })
 
 function onExport() {

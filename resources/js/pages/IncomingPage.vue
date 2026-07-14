@@ -24,10 +24,13 @@
                     />
                     <KanbanColumn
                         title="Отгруженные"
-                        :cards="shippedOrders"
+                        :cards="sortedShippedOrders"
                         :sortable="true"
+                        :sort-direction="shippedSortDirection"
+                        :sort-label="shippedSortLabel"
                         empty-text="Вы еще ничего не отгружали.<br>Все завершенные заказы будут<br>храниться здесь"
                         @card-click="openOrder"
+                        @sort="toggleShippedSort"
                     />
                 </div>
             </div>
@@ -38,16 +41,45 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import MainLayout from '../components/layout/MainLayout.vue'
 import IncomingFilter from '../components/orders/IncomingFilter.vue'
 import KanbanColumn from '../components/orders/KanbanColumn.vue'
 import OrderModal from '../components/orders/OrderModal.vue'
 
 const selectedOrderId = ref(null)
+const shippedSortDirection = ref('none')
 
 function openOrder(id) {
     selectedOrderId.value = id
+}
+
+function toggleShippedSort() {
+    if (shippedSortDirection.value === 'none') {
+        shippedSortDirection.value = 'desc'
+    } else if (shippedSortDirection.value === 'desc') {
+        shippedSortDirection.value = 'asc'
+    } else {
+        shippedSortDirection.value = 'desc'
+    }
+}
+
+const shippedSortLabel = 'По дате'
+
+const sortedShippedOrders = computed(() => {
+    if (shippedSortDirection.value === 'none') return shippedOrders
+    const dir = shippedSortDirection.value === 'asc' ? 1 : -1
+    return [...shippedOrders].sort((a, b) => {
+        const tA = parseTime(a.timer)
+        const tB = parseTime(b.timer)
+        return (tA - tB) * dir
+    })
+})
+
+function parseTime(str) {
+    const h = str.match(/(\d+)\s*ч/)
+    const m = str.match(/(\d+)\s*мин/)
+    return (h ? parseInt(h[1]) * 60 : 0) + (m ? parseInt(m[1]) : 0)
 }
 
 const newOrders = [

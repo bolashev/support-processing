@@ -252,3 +252,196 @@
 
     &:hover svg path
         stroke: $c-text
+
+// ===== Date Picker =====
+
+.dp-overlay
+    position: fixed
+    inset: 0
+    z-index: 1000
+
+.dp
+    position: absolute
+    width: 640px
+    background: $c-white
+    border-radius: 4px
+    box-shadow: 0px 4px 4px rgba(185.92, 185.92, 185.92, 0.30)
+    z-index: 1001
+
+.dp__calendars
+    display: flex
+    align-items: stretch
+
+.dp__divider
+    width: 0
+    height: 298px
+    border-left: 1px $c-border-soft solid
+    margin-top: 16px
+    margin-bottom: 16px
+
+.dp__line
+    height: 0
+    border-top: 1px $c-border-soft solid
+    margin-left: 24px
+    margin-right: 24px
+
+.dp__footer
+    padding: 10px 24px
+    background: $c-white
+    border-radius: 0 0 4px 4px
+    display: flex
+    justify-content: flex-end
+
+.dp__apply
+    width: 160px
+    height: 40px
+    padding: 12px 24px
+    background: $c-danger
+    border: none
+    border-radius: 8px
+    color: $c-white
+    font-family: $f-roboto
+    font-size: 14px
+    font-weight: 600
+    line-height: 20px
+    cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+
+    &:hover
+        opacity: 0.9
+
+// ===== Calendar Month =====
+
+.cal-month
+    min-width: 320px
+    max-width: 320px
+
+.cal-month__header
+    padding: 16px 24px 8px
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 24px
+
+.cal-month__title
+    font-family: $f-roboto
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: 0.15px
+    color: rgba(0, 0, 0, 0.87)
+    flex: 1
+    text-align: center
+
+.cal-month__arrow
+    width: 32px
+    height: 32px
+    border: none
+    background: transparent
+    border-radius: 100px
+    padding: 5px
+    cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+
+    &:hover
+        background: rgba(0, 0, 0, 0.04)
+
+.cal-month__weekdays
+    display: flex
+    justify-content: center
+    gap: 2px
+
+.cal-month__weekday
+    width: 36px
+    height: 36px
+    min-width: 36px
+    min-height: 36px
+    display: flex
+    align-items: center
+    justify-content: center
+    font-family: $f-roboto
+    font-size: 14px
+    font-weight: 400
+    line-height: 20.02px
+    letter-spacing: 0.17px
+    color: rgba(0, 0, 0, 0.60)
+    border-radius: 100px
+
+.cal-month__weekday--weekend
+    color: $c-danger
+
+.cal-month__grid
+    padding-top: 12px
+    display: flex
+    flex-direction: column
+    gap: 2px
+
+.cal-month__week
+    display: flex
+    justify-content: center
+    gap: 2px
+    padding: 0 28px
+
+.cal-month__day
+    width: 36px
+    height: 36px
+    min-width: 36px
+    min-height: 36px
+    display: flex
+    align-items: center
+    justify-content: center
+    border: none
+    background: transparent
+    border-radius: 100px
+    font-family: $f-roboto
+    font-size: 14px
+    font-weight: 400
+    line-height: 20.02px
+    letter-spacing: 0.17px
+    color: rgba(0, 0, 0, 0.87)
+    cursor: pointer
+    padding: 0
+
+    &:hover:not(:disabled):not(.cal-month__day--selected)
+        background: $c-status-paid-bg
+        color: $c-status-paid
+        border-radius: 10px
+
+.cal-month__day--weekend
+    color: $c-danger
+
+.cal-month__day--today
+    outline: 1px $c-status-paid solid
+    outline-offset: -1px
+    color: $c-status-paid
+
+.cal-month__day--selected
+    background: $c-status-paid-bg
+    color: $c-status-paid
+    border-radius: 10px
+
+.cal-month__day--in-range
+    background: $c-status-paid-bg
+    color: $c-status-paid
+    border-radius: 10px
+
+.cal-month__day--hover-range
+    background: $c-status-paid-bg
+    color: $c-status-paid
+    border-radius: 10px
+
+.cal-month__day--disabled
+    color: $c-sort-icon
+    cursor: default
+    background: transparent
+
+.cal-month__day--start,
+.cal-month__day--end
+    background: $c-status-paid-bg
+    color: $c-status-paid
+    border-radius: 10px

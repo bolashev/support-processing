@@ -55,7 +55,10 @@ defineEmits(['close'])
 
 const orderData = reactive({
     deliveryMethod: 'Самовывоз',
-    reserveDates: '24.05.2024 — 27.05.2024',
+    reserveDates: {
+        start: new Date(2024, 4, 24),
+        end: new Date(2024, 4, 27),
+    },
     driver: 'Петров Иван',
     driverPhone: '+7 900 111-22-33',
     clientName: 'ООО «ТехноПром Инжиниринг»',

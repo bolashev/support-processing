@@ -11,7 +11,7 @@
                         :show-count="selectedManagerIds.length > 0 && selectedManagerIds.length < managers.length"
                     />
 
-                    <PeriodSwitcher v-model="period" />
+                    <PeriodSwitcher v-model="period" v-model:date-range="dateRange" />
                 </div>
                 <SearchInput v-model="searchValue" placeholder="Поиск по архиву..." />
             </div>
@@ -42,12 +42,23 @@
                                 <div class="stats-col-header"><span>Номер заказа</span></div>
                             </th>
                             <th>
-                                <div class="stats-col-header"><span>Время обработки</span></div>
+                                <div class="stats-col-header stats-col-header--sortable" @click="toggleSort('processingTime')">
+                                    <span>Время обработки</span>
+                                    <SortIcon
+                                        v-if="sortKey === 'processingTime'"
+                                        :direction="sortDirection"
+                                        color="#878B99"
+                                    />
+                                </div>
                             </th>
                             <th>
-                                <div class="stats-col-header">
+                                <div class="stats-col-header stats-col-header--sortable" @click="toggleSort('date')">
                                     <span>Дата и время</span>
-                                    <Icon name="sort" :size="16" class="stats-sort-icon" color="#959595" />
+                                    <SortIcon
+                                        v-if="sortKey === 'date'"
+                                        :direction="sortDirection"
+                                        color="#878B99"
+                                    />
                                 </div>
                             </th>
                             <th>
@@ -90,10 +101,14 @@ import ManagerDropdown from '../components/ui/ManagerDropdown.vue'
 import PeriodSwitcher from '../components/ui/PeriodSwitcher.vue'
 import SearchInput from '../components/ui/SearchInput.vue'
 import Icon from '../components/ui/Icon.vue'
+import SortIcon from '../components/ui/SortIcon.vue'
 
 const searchValue = ref('')
 const selectedManagerIds = ref([])
 const period = ref('today')
+const dateRange = ref(null)
+const sortKey = ref(null)
+const sortDirection = ref('asc')
 
 const managers = [
     { id: 1, name: 'Зайцева Екатерина Сергеевна' },
@@ -103,14 +118,23 @@ const managers = [
 ]
 
 const orders = [
-    { id: 1, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154204', processingTime: '01:29 ч.', date: '17 марта', time: '12:11', manager: '(Вы)', isSelf: true },
-    { id: 2, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154205', processingTime: '03:00 ч.', date: '15 марта', time: '19:11', manager: 'Илья Лукинов', isSelf: false },
-    { id: 3, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154206', processingTime: '03:00 ч.', date: '15 марта', time: '13:55', manager: 'Константин Константино...', isSelf: false },
-    { id: 4, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154207', processingTime: '4 мин.', date: '15 марта', time: '13:55', manager: 'Валерий Статов', isSelf: false },
+    { id: 1, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154204', processingTime: '01:29 ч.', processingMinutes: 89, date: '17 марта', time: '12:11', dateSort: '2026-03-17 12:11', manager: '(Вы)', isSelf: true },
+    { id: 2, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154205', processingTime: '03:00 ч.', processingMinutes: 180, date: '15 марта', time: '19:11', dateSort: '2026-03-15 19:11', manager: 'Илья Лукинов', isSelf: false },
+    { id: 3, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154206', processingTime: '03:00 ч.', processingMinutes: 180, date: '15 марта', time: '13:55', dateSort: '2026-03-15 13:55', manager: 'Константин Константино...', isSelf: false },
+    { id: 4, status: 'Закрыт. Отгружен 100%', number: 'КЛ5-0154207', processingTime: '4 мин.', processingMinutes: 4, date: '15 марта', time: '13:55', dateSort: '2026-03-15 13:55', manager: 'Валерий Статов', isSelf: false },
 ]
 
+function toggleSort(key) {
+    if (sortKey.value === key) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortKey.value = key
+        sortDirection.value = 'desc'
+    }
+}
+
 const filteredOrders = computed(() => {
-    let result = orders
+    let result = [...orders]
 
     if (selectedManagerIds.value.length > 0) {
         result = result.filter(o => {
@@ -125,6 +149,22 @@ const filteredOrders = computed(() => {
             o.number.toLowerCase().includes(q) ||
             o.manager.toLowerCase().includes(q)
         )
+    }
+
+    if (sortKey.value) {
+        result.sort((a, b) => {
+            let valA, valB
+            if (sortKey.value === 'processingTime') {
+                valA = a.processingMinutes
+                valB = b.processingMinutes
+            } else if (sortKey.value === 'date') {
+                valA = a.dateSort
+                valB = b.dateSort
+            }
+            if (valA < valB) return sortDirection.value === 'asc' ? -1 : 1
+            if (valA > valB) return sortDirection.value === 'asc' ? 1 : -1
+            return 0
+        })
     }
 
     return result

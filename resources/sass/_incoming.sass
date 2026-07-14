@@ -68,6 +68,7 @@
     justify-content: space-between
     align-items: center
     display: flex
+    user-select: none
 
 .col-header-left
     justify-content: flex-start
@@ -105,10 +106,13 @@
     overflow: hidden
 
 .col-sort-label
-    color: $c-sort-icon
+    color: $c-status-paid
     font-size: 14px
     font-weight: 500
     line-height: 20px
+
+    &:hover
+        color: $c-text
 
 .col-body
     align-self: stretch

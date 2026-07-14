@@ -8,7 +8,12 @@
                 @update:selected-ids="$emit('update:selectedManagerIds', $event)"
             />
 
-            <PeriodSwitcher :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" />
+            <PeriodSwitcher
+                :model-value="modelValue"
+                :date-range="dateRange"
+                @update:model-value="$emit('update:modelValue', $event)"
+                @update:date-range="$emit('update:dateRange', $event)"
+            />
         </div>
 
         <div class="stats-export" @click="$emit('export')">
@@ -28,7 +33,8 @@ defineProps({
     selectedManagerIds: { type: Array, default: () => [] },
     managerPrefix: { type: String, default: '' },
     modelValue: { type: String, default: 'today' },
+    dateRange: { type: Object, default: null },
 })
 
-defineEmits(['update:modelValue', 'export', 'update:selectedManagerIds'])
+defineEmits(['update:modelValue', 'update:dateRange', 'export', 'update:selectedManagerIds'])
 </script>
