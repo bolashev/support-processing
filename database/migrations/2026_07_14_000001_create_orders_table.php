@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::connection('mysql_support_processing')->create('orders', function (Blueprint $table) {
+        Schema->create('orders', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('bitrix_id')->nullable()->unique();
@@ -57,6 +57,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::connection('mysql_support_processing')->dropIfExists('orders');
+        Schema->dropIfExists('orders');
     }
 };

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::connection('mysql_support_processing')->create('notes', function (Blueprint $table) {
+        Schema->create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('body');
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::connection('mysql_support_processing')->dropIfExists('notes');
+        Schema->dropIfExists('notes');
     }
 };

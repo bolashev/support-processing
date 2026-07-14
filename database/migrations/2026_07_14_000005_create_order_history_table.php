@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::connection('mysql_support_processing')->create('order_history', function (Blueprint $table) {
+        Schema->create('order_history', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::connection('mysql_support_processing')->dropIfExists('order_history');
+        Schema->dropIfExists('order_history');
     }
 };

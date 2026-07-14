@@ -24,8 +24,6 @@ class OrderComment extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_support_processing';
-
     protected $guarded = ['_token', '_method'];
 
     protected function casts(): array

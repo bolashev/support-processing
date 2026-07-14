@@ -21,8 +21,6 @@ class Note extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_support_processing';
-
     protected $guarded = ['_token', '_method'];
 
     public function user(): BelongsTo

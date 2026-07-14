@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::connection('mysql_support_processing')->create('order_items', function (Blueprint $table) {
+        Schema->create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
 
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::connection('mysql_support_processing')->dropIfExists('order_items');
+        Schema->dropIfExists('order_items');
     }
 };

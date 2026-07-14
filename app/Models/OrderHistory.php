@@ -25,7 +25,9 @@ class OrderHistory extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_support_processing';
+    protected $table = 'order_history';
+
+    public $timestamps = false;
 
     public $timestamps = false;
 
