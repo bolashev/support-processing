@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\UserRole;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -68,9 +68,13 @@ final class SSOController
             [
                 'name'  => $payload['name'] ?? 'Unknown',
                 'email' => $payload['email'] ?? 'unknown@portal.trapeza.ru',
-                'role'  => UserRole::SupportManager,
             ],
         );
+
+        $supportRole = Role::firstOrCreate(['slug' => 'support_manager'], ['name' => 'Менеджер поддержки']);
+        if (!$user->roles->contains($supportRole)) {
+            $user->roles()->attach($supportRole);
+        }
 
         Auth::login($user, true);
 

@@ -430,3 +430,84 @@
     background: $c-status-paid-bg
     color: $c-status-paid
     border-radius: 10px
+
+// ===== Toast =====
+
+.toast-container
+    position: fixed
+    top: 20px
+    right: 20px
+    z-index: 10000
+    display: flex
+    flex-direction: column
+    gap: 8px
+    pointer-events: none
+
+.toast-item
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    min-width: 320px
+    max-width: 480px
+    padding: 14px 16px
+    border-radius: $radius-lg
+    background: $c-white
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12)
+    pointer-events: auto
+    user-select: text
+    cursor: default
+
+    &--error
+        border-left: 3px solid $c-danger
+
+    &--success
+        border-left: 3px solid $c-success
+
+    &--warning
+        border-left: 3px solid $c-warning
+
+.toast-content
+    flex: 1
+    min-width: 0
+
+.toast-message
+    font-size: $fs-body
+    font-weight: $fw-regular
+    line-height: $lh-body
+    color: $c-text
+    word-break: break-word
+
+.toast-close
+    flex-shrink: 0
+    width: 20px
+    height: 20px
+    display: flex
+    align-items: center
+    justify-content: center
+    border: none
+    background: none
+    cursor: pointer
+    color: $c-muted-soft
+    border-radius: $radius-sm
+    transition: background 0.15s, color 0.15s
+
+    &:hover
+        background: $c-hover-bg
+        color: $c-text
+
+.toast-enter-active
+    transition: all 0.25s ease
+
+.toast-leave-active
+    transition: all 0.2s ease
+
+.toast-enter-from
+    opacity: 0
+    transform: translateX(40px)
+
+.toast-leave-to
+    opacity: 0
+    transform: translateX(40px)
+
+.toast-move
+    transition: transform 0.25s ease

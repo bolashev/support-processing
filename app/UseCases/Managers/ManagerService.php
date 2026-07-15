@@ -2,7 +2,6 @@
 
 namespace App\UseCases\Managers;
 
-use App\Enums\UserRole;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -15,7 +14,7 @@ final readonly class ManagerService
             ->distinct()
             ->pluck('manager_id');
 
-        return User::where('role', UserRole::SupportManager)
+        return User::whereHas('roles', fn ($q) => $q->where('slug', 'support_manager'))
             ->whereIn('id', $managerIds)
             ->orderBy('name')
             ->get(['id', 'name']);

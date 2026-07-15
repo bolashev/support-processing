@@ -1,8 +1,7 @@
 <template>
     <Teleport to="body">
         <div v-if="visible" class="modal-overlay" @click.self="$emit('close')">
-            <div v-if="store.loading" class="modal-loading">Загрузка...</div>
-            <div v-else-if="store.currentOrder" class="modal-container">
+            <div v-if="store.currentOrder" class="modal-container">
                 <div class="modal-panels">
                     <OrderInfoPanel :order-data="orderData" />
                     <OrderDocsPanel :documents="documents" />
@@ -55,6 +54,7 @@
 <script setup>
 import { computed, watch } from 'vue'
 import { useOrdersStore } from '@/stores/orders'
+import { useManagersStore } from '@/stores/managers'
 import Icon from '@/components/ui/Icon.vue'
 import OrderInfoPanel from './OrderInfoPanel.vue'
 import OrderDocsPanel from './OrderDocsPanel.vue'
@@ -67,19 +67,17 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 const store = useOrdersStore()
+const managersStore = useManagersStore()
 
 watch(() => props.visible, (val) => {
     document.body.style.overflow = val ? 'hidden' : ''
-    if (val && props.orderId) {
-        store.fetchOrder(props.orderId)
-    }
 }, { immediate: true })
 
 watch(() => props.orderId, (id) => {
     if (id && props.visible) {
         store.fetchOrder(id)
     }
-}, { immediate: true })
+})
 
 const orderData = computed(() => {
     const o = store.currentOrder
@@ -87,7 +85,9 @@ const orderData = computed(() => {
     return {
         number: o.number,
         requestStatus: o.request_status_label,
+        requestStatusColor: o.request_status_color,
         orderStatus: o.order_status_label,
+        orderStatusType: o.order_status_type,
         channel: o.channel_label,
         counterpartyName: o.counterparty_name,
         counterpartyPartner: o.counterparty_partner,
@@ -117,8 +117,17 @@ const documents = computed(() => {
 async function takeOrder() {
     try {
         await store.takeOrder(props.orderId)
+        managersStore.fetchManagers()
     } catch (e) {
         alert(e.response?.data?.message || 'Ошибка')
     }
 }
 </script>
+
+<style scoped>
+.modal-container--loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+</style>

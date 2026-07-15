@@ -131,6 +131,48 @@
         outline-offset: -1px
         color: $c-status-open
 
+    &--wait
+        background: $c-status-wait-bg
+        outline: 1px solid $c-status-wait-border
+        outline-offset: -1px
+        color: $c-status-wait
+
+    &--paid
+        background: $c-status-paid-bg
+        outline: 1px solid $c-status-paid
+        outline-offset: -1px
+        color: $c-status-paid
+
+    &--shipped
+        background: $c-status-open-bg
+        outline: 1px solid $c-status-open-border
+        outline-offset: -1px
+        color: $c-status-open
+
+    &--closed
+        background: $c-status-closed-bg
+        outline: 1px solid rgba(130, 133, 148, 0.15)
+        outline-offset: -1px
+        color: $c-muted-soft
+
+    &--cancelled
+        background: $c-status-closed-bg
+        outline: 1px solid rgba(130, 133, 148, 0.15)
+        outline-offset: -1px
+        color: $c-muted-soft
+
+    &--transfer
+        background: $c-status-wait-bg
+        outline: 1px solid $c-status-wait-border
+        outline-offset: -1px
+        color: $c-status-wait
+
+    &--transit
+        background: $c-status-paid-bg
+        outline: 1px solid $c-status-paid
+        outline-offset: -1px
+        color: $c-status-paid
+
 .modal-order-row
     display: flex
     justify-content: space-between
@@ -153,6 +195,12 @@
 
     &--green
         background: $c-timer-green
+
+    &--orange
+        background: $c-timer-orange
+
+    &--purple
+        background: #886CE4
 
 .modal-state-label
     color: $c-text

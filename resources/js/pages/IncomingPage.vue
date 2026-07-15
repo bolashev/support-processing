@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useOrdersStore } from '@/stores/orders'
 import MainLayout from '@/components/layout/MainLayout.vue'
@@ -84,7 +84,8 @@ const shippedSortDirection = computed({
     },
 })
 
-function openOrder(id) {
+async function openOrder(id) {
+    await store.fetchOrder(id)
     selectedOrderId.value = id
 }
 
@@ -100,6 +101,12 @@ function toggleShippedSort() {
 }
 
 const shippedSortLabel = 'По дате'
+
+watch(selectedOrderId, (id) => {
+    if (id) {
+        store.fetchOrder(id)
+    }
+}, { immediate: true })
 </script>
 
 <style scoped>

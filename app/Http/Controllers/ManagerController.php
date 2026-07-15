@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ManagerResource;
 use App\UseCases\Managers\ManagerService;
-use Illuminate\Http\JsonResponse;
 
 class ManagerController extends Controller
 {
@@ -12,7 +11,7 @@ class ManagerController extends Controller
         private readonly ManagerService $managers,
     ) {}
 
-    public function index(): JsonResponse
+    public function index()
     {
         return $this->handleException(fn () =>
             ManagerResource::collection($this->managers->getList())

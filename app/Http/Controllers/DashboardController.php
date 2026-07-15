@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
 use App\UseCases\Dashboard\DashboardService;
-use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
@@ -12,7 +11,7 @@ class DashboardController extends Controller
         private readonly DashboardService $dashboard,
     ) {}
 
-    public function index(): JsonResponse
+    public function index()
     {
         return $this->handleException(fn () =>
             new DashboardResource($this->dashboard->getCounters())

@@ -29,8 +29,6 @@ class OrderHistory extends Model
 
     public $timestamps = false;
 
-    public $timestamps = false;
-
     protected $guarded = ['_token', '_method'];
 
     protected function casts(): array

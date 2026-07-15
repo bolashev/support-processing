@@ -9,13 +9,13 @@
         <div class="modal-section-fixed">
             <div class="modal-section">
                 <div class="modal-status">
-                    <div class="status-badge status-badge--open">{{ orderData.orderStatus || 'Открыт' }}</div>
+                    <div class="status-badge" :class="`status-badge--${orderData.orderStatusType || 'open'}`">{{ orderData.orderStatus || 'Открыт' }}</div>
                 </div>
 
                 <div class="modal-order-row">
                     <div class="modal-order-number">Заказ № {{ orderData.number }}</div>
                     <div class="modal-state">
-                        <span class="modal-state-dot modal-state-dot--green"></span>
+                        <span class="modal-state-dot" :class="`modal-state-dot--${orderData.requestStatusColor || 'green'}`"></span>
                         <span class="modal-state-label">{{ orderData.requestStatus || 'Новый' }}</span>
                     </div>
                 </div>
@@ -115,20 +115,20 @@
                     <div class="modal-manager">
                         <img class="modal-manager-avatar" src="https://placehold.co/43x43" alt="" />
                         <div class="modal-manager-info">
-                            <span class="modal-manager-name">{{ orderData.salesManagerName || 'Не назначен' }}</span>
-                            <span class="modal-manager-role">{{ orderData.salesManagerPhone }}</span>
+                            <span class="modal-manager-name">{{ orderData.manager?.name || 'Не назначен' }}</span>
+                            <span v-if="orderData.manager?.position" class="modal-manager-role">{{ orderData.manager.position }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="info-row">
+                <div v-if="orderData.manager?.phone" class="info-row">
                     <span class="info-label">Номер телефона:</span>
-                    <span class="info-value info-value--link">{{ orderData.salesManagerPhone }}</span>
+                    <span class="info-value info-value--link">{{ orderData.manager.phone }}</span>
                 </div>
 
-                <div class="info-row">
-                    <span class="info-label">Эл.почта</span>
-                    <span class="info-value info-value--link">{{ orderData.salesManagerEmail }}</span>
+                <div v-if="orderData.manager?.email" class="info-row">
+                    <span class="info-label">Эл.почта:</span>
+                    <span class="info-value info-value--link">{{ orderData.manager.email }}</span>
                 </div>
             </div>
         </div>

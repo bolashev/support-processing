@@ -20,15 +20,15 @@
                 class="modal-comment"
             >
                 <div class="modal-comment-header">
-                    <img class="modal-comment-avatar" :src="comment.avatar" alt="" />
-                    <span class="modal-comment-author">{{ comment.author }}</span>
+                    <img class="modal-comment-avatar" :src="comment.avatar || 'https://placehold.co/30x30'" alt="" />
+                    <span class="modal-comment-author">{{ comment.user?.name || 'Аноним' }}</span>
                 </div>
                 <div class="modal-comment-bubble">
-                    <span>{{ comment.text }}</span>
+                    <span>{{ comment.body }}</span>
                 </div>
                 <div class="modal-comment-time">
                     <Icon name="clock" :size="16" color="#828282" />
-                    <span>{{ comment.time }}</span>
+                    <span>{{ formatTime(comment.created_at) }}</span>
                 </div>
             </div>
         </div>
@@ -37,36 +37,29 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useOrdersStore } from '@/stores/orders'
 import Icon from '@/components/ui/Icon.vue'
 import CommentForm from '@/components/ui/CommentForm.vue'
 
-defineProps({
-    comments: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                author: 'Ольга Ситникова',
-                avatar: 'https://placehold.co/30x30',
-                text: 'Товар собран, ждем машину',
-                time: '14 марта 2026 · 10:30',
-            },
-            {
-                id: 2,
-                author: 'Сергей Кудряш',
-                avatar: 'https://placehold.co/30x30',
-                text: 'Клиент подтвердил самовывоз на понедельник',
-                time: '12 марта 2026 · 15:50',
-            },
-        ],
-    },
+const props = defineProps({
+    orderId: { type: Number, required: true },
+    comments: { type: Array, default: () => [] },
 })
 
+const store = useOrdersStore()
 const newComment = ref('')
 
-function sendComment() {
-    if (!newComment.value.trim()) return
-    // TODO: интеграция с API
+async function sendComment() {
+    const text = newComment.value.trim()
+    if (!text) return
+    await store.addComment(props.orderId, text)
     newComment.value = ''
+}
+
+function formatTime(dateStr) {
+    if (!dateStr) return ''
+    const d = new Date(dateStr)
+    return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) +
+        ' · ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
 }
 </script>

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\UserRole;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -14,9 +14,12 @@ use Illuminate\Notifications\Notifiable;
  * @property int|null $bitrix_id
  * @property string $name
  * @property string $email
- * @property UserRole $role
+ * @property string|null $phone
+ * @property string|null $position
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
  */
 class User extends Authenticatable
 {
@@ -26,17 +29,21 @@ class User extends Authenticatable
         'bitrix_id',
         'name',
         'email',
-        'role',
+        'phone',
+        'position',
     ];
 
     protected $hidden = [
         'remember_token',
     ];
 
-    protected function casts(): array
+    public function roles(): BelongsToMany
     {
-        return [
-            'role' => UserRole::class,
-        ];
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function hasRole(string $slug): bool
+    {
+        return $this->roles->contains('slug', $slug);
     }
 }

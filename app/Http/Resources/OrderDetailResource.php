@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\OrderRequestStatus;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,8 +21,10 @@ class OrderDetailResource extends JsonResource
             'number' => $this->number,
             'request_status' => $this->request_status->value,
             'request_status_label' => $this->request_status->label(),
+            'request_status_color' => $this->mapStateColor($this->request_status),
             'order_status' => $this->order_status->value,
             'order_status_label' => $this->order_status->label(),
+            'order_status_type' => $this->mapStatusType(),
             'channel' => $this->channel?->value,
             'channel_label' => $this->channel?->label(),
 
@@ -55,6 +59,9 @@ class OrderDetailResource extends JsonResource
             'manager' => $this->whenLoaded('manager', fn () => [
                 'id' => $this->manager->id,
                 'name' => $this->manager->name,
+                'email' => $this->manager->email,
+                'phone' => $this->manager->phone,
+                'position' => $this->manager->position,
             ]),
 
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
@@ -62,5 +69,29 @@ class OrderDetailResource extends JsonResource
             'comments' => OrderCommentResource::collection($this->whenLoaded('comments')),
             'history' => OrderHistoryResource::collection($this->whenLoaded('history')),
         ];
+    }
+
+    private function mapStateColor(OrderRequestStatus $status): string
+    {
+        return match ($status) {
+            OrderRequestStatus::New => 'green',
+            OrderRequestStatus::InProgress => 'orange',
+            OrderRequestStatus::Completed => 'purple',
+        };
+    }
+
+    private function mapStatusType(): string
+    {
+        return match ($this->order_status) {
+            OrderStatus::Open => 'open',
+            OrderStatus::AwaitingPayment => 'wait',
+            OrderStatus::OpenPaidPercent => 'paid',
+            OrderStatus::OpenShippedPercent => 'shipped',
+            OrderStatus::ClosedShipped100 => 'closed',
+            OrderStatus::ClosedShippedPercent => 'closed',
+            OrderStatus::Cancelled => 'cancelled',
+            OrderStatus::CreatedTransfer => 'transfer',
+            OrderStatus::InTransit => 'transit',
+        };
     }
 }

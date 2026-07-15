@@ -1,10 +1,12 @@
 <template>
     <router-view />
+    <ToastContainer />
 </template>
 
 <script setup>
 import { watch } from 'vue'
 import { useRouter } from 'vue-router'
+import ToastContainer from '@/components/ui/ToastContainer.vue'
 
 const router = useRouter()
 

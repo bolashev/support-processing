@@ -86,6 +86,9 @@ watch([selectedIds, () => route.query.search, () => route.query.shipped_sort], (
 
 const selectedLabel = computed(() => {
     if (selectedIds.value.length === 1) {
+        if (selectedIds.value[0] === user.value?.id) {
+            return 'Только я'
+        }
         const m = managersStore.items.find(i => i.id === selectedIds.value[0])
         return m ? m.name : ''
     }

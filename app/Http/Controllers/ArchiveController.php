@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\Archive\ArchiveListData;
 use App\Http\Requests\Archive\ArchiveListRequest;
 use App\Http\Resources\ArchiveOrderResource;
 use App\UseCases\Archive\ArchiveService;
-use Illuminate\Http\JsonResponse;
 
 class ArchiveController extends Controller
 {
@@ -13,10 +13,17 @@ class ArchiveController extends Controller
         private readonly ArchiveService $archive,
     ) {}
 
-    public function index(ArchiveListRequest $request): JsonResponse
+    public function index(ArchiveListRequest $request)
     {
         return $this->handleException(fn () =>
-            ArchiveOrderResource::collection($this->archive->getList($request->data()))
+            ArchiveOrderResource::collection($this->archive->getList(
+                new ArchiveListData(
+                    search: $request['search'],
+                    manager_id: $request['manager_id'] ? (int) $request['manager_id'] : null,
+                    date_from: $request['dateFrom'],
+                    date_to: $request['dateTo'],
+                ),
+            ))
         );
     }
 }
