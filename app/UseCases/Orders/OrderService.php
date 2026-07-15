@@ -25,14 +25,14 @@ final readonly class OrderService
             ->when($data->request_status, function (Builder $query, OrderRequestStatus $status) {
                 $query->byRequestStatus($status);
             })
-            ->when($data->manager_filter === 'self', function (Builder $query) {
-                $query->where('manager_id', auth()->id());
-            })
-            ->when($data->manager_id, function (Builder $query, int $managerId) {
-                $query->forManager($managerId);
+            ->when($data->manager_ids, function (Builder $query, array $managerIds) {
+                $query->whereIn('manager_id', $managerIds);
             });
 
-        return $query->orderBy('created_at', 'desc')
+        return $query->when($data->shipped_sort, function (Builder $query, string $direction) {
+                $query->orderBy('shipped_at', $direction);
+            })
+            ->orderBy('created_at', 'desc')
             ->paginate($data->per_page);
     }
 

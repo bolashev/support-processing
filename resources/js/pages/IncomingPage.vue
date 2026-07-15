@@ -8,23 +8,24 @@
             <div class="section-title-row">
                 <span class="section-title">Входящие заявки</span>
             </div>
-            <div class="columns-wrap">
+            <div v-if="store.loading && !store.allOrders.length" class="loading-state">Загрузка...</div>
+            <div v-else class="columns-wrap" :class="{ 'columns-wrap--loading': store.loading }">
                 <div class="columns-row">
                     <KanbanColumn
                         title="Новые"
-                        :cards="newOrders"
+                        :cards="store.newOrders"
                         empty-text="Пока здесь пусто.<br>Как только появятся новые заявки,<br>они отобразятся в этом списке"
                         @card-click="openOrder"
                     />
                     <KanbanColumn
                         title="В работе"
-                        :cards="inProgressOrders"
+                        :cards="store.inProgressOrders"
                         empty-text="Нет заявок в работе"
                         @card-click="openOrder"
                     />
                     <KanbanColumn
                         title="Отгруженные"
-                        :cards="sortedShippedOrders"
+                        :cards="store.shippedOrders"
                         :sortable="true"
                         :sort-direction="shippedSortDirection"
                         :sort-label="shippedSortLabel"
@@ -36,160 +37,75 @@
             </div>
         </div>
 
-        <OrderModal :visible="!!selectedOrderId" @close="selectedOrderId = null" />
+        <OrderModal :visible="!!selectedOrderId" :order-id="selectedOrderId" @close="selectedOrderId = null" />
     </MainLayout>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useOrdersStore } from '@/stores/orders'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import IncomingFilter from '@/components/orders/IncomingFilter.vue'
 import KanbanColumn from '@/components/orders/KanbanColumn.vue'
 import OrderModal from '@/components/orders/OrderModal.vue'
 
-const selectedOrderId = ref(null)
-const shippedSortDirection = ref('none')
+const store = useOrdersStore()
+const route = useRoute()
+const router = useRouter()
+
+const selectedOrderId = computed({
+    get() {
+        return route.query.order ? Number(route.query.order) : null
+    },
+    set(val) {
+        const query = { ...route.query }
+        if (val) {
+            query.order = val
+        } else {
+            delete query.order
+        }
+        router.replace({ query })
+    },
+})
+
+const shippedSortDirection = computed({
+    get() {
+        return route.query.shipped_sort || 'none'
+    },
+    set(val) {
+        const query = { ...route.query }
+        if (val && val !== 'none') {
+            query.shipped_sort = val
+        } else {
+            delete query.shipped_sort
+        }
+        router.replace({ query })
+    },
+})
 
 function openOrder(id) {
     selectedOrderId.value = id
 }
 
 function toggleShippedSort() {
-    if (shippedSortDirection.value === 'none') {
+    const current = shippedSortDirection.value
+    if (current === 'none') {
         shippedSortDirection.value = 'desc'
-    } else if (shippedSortDirection.value === 'desc') {
+    } else if (current === 'desc') {
         shippedSortDirection.value = 'asc'
     } else {
-        shippedSortDirection.value = 'desc'
+        shippedSortDirection.value = 'none'
     }
 }
 
 const shippedSortLabel = 'По дате'
-
-const sortedShippedOrders = computed(() => {
-    if (shippedSortDirection.value === 'none') return shippedOrders
-    const dir = shippedSortDirection.value === 'asc' ? 1 : -1
-    return [...shippedOrders].sort((a, b) => {
-        const tA = parseTime(a.timer)
-        const tB = parseTime(b.timer)
-        return (tA - tB) * dir
-    })
-})
-
-function parseTime(str) {
-    const h = str.match(/(\d+)\s*ч/)
-    const m = str.match(/(\d+)\s*мин/)
-    return (h ? parseInt(h[1]) * 60 : 0) + (m ? parseInt(m[1]) : 0)
-}
-
-const newOrders = [
-    {
-        id: 1,
-        number: 'КЛ4-0154299',
-        counterparty: 'ООО «Сырники по утрам»',
-        statusLabel: 'Открыт',
-        statusType: 'open',
-        stateLabel: 'Новый',
-        stateColor: 'green',
-        timerLabel: 'Ожидание:',
-        timer: '4 мин.',
-        timerColor: 'green',
-        manager: null,
-        isSelf: false,
-        messages: 0,
-        date: '04 марта',
-        time: '10:30',
-    },
-]
-
-const inProgressOrders = [
-    {
-        id: 2,
-        number: 'КЛ5-0154204',
-        counterparty: 'ООО «Карамельный экстаз»',
-        statusLabel: 'Открыт. Оплачен 10%',
-        statusType: 'paid',
-        stateLabel: 'В работе',
-        stateColor: 'orange',
-        timerLabel: 'В работе:',
-        timer: '02:31 ч.',
-        timerColor: 'orange',
-        manager: null,
-        isSelf: true,
-        messages: 1,
-        date: '16 марта',
-        time: '09:17',
-    },
-    {
-        id: 3,
-        number: 'КЛ5-0154204',
-        counterparty: 'ООО «Петров и Ко»',
-        statusLabel: 'Открыт. Отгружен 10%',
-        statusType: 'shipped',
-        stateLabel: 'В работе',
-        stateColor: 'orange',
-        timerLabel: 'В работе:',
-        timer: '3 часа',
-        timerColor: 'red',
-        manager: 'Илья Лукинов',
-        isSelf: false,
-        messages: 0,
-        date: '04 марта',
-        time: '10:30',
-    },
-    {
-        id: 4,
-        number: 'КЛ5-0154204',
-        counterparty: 'ООО «Петров и Ко»',
-        statusLabel: 'Ожидает оплаты',
-        statusType: 'wait',
-        stateLabel: 'В работе',
-        stateColor: 'orange',
-        timerLabel: 'В работе:',
-        timer: '4 часа',
-        timerColor: 'red',
-        manager: 'Валерий Статов',
-        isSelf: false,
-        messages: 0,
-        date: '03 марта',
-        time: '10:30',
-    },
-]
-
-const shippedOrders = [
-    {
-        id: 5,
-        number: 'КЛ5-0154204',
-        counterparty: 'ООО «Финиш»',
-        statusLabel: 'Закрыт. Отгружен 100%',
-        statusType: 'closed',
-        stateLabel: 'Завершен',
-        stateColor: 'purple',
-        timerLabel: 'Время обработки:',
-        timer: '01:29 ч.',
-        timerColor: 'default',
-        manager: null,
-        isSelf: true,
-        messages: 3,
-        date: '17 марта',
-        time: '12:11',
-    },
-    {
-        id: 6,
-        number: 'КЛ5-0154204',
-        counterparty: 'ООО «Финиш»',
-        statusLabel: 'Закрыт. Отгружен 100%',
-        statusType: 'closed',
-        stateLabel: 'Завершен',
-        stateColor: 'purple',
-        timerLabel: 'Время обработки:',
-        timer: '40 мин.',
-        timerColor: 'default',
-        manager: 'Константин Конста...',
-        isSelf: false,
-        messages: 0,
-        date: '17 марта',
-        time: '12:11',
-    },
-]
 </script>
+
+<style scoped>
+.columns-wrap--loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+</style>

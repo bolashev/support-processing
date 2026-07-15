@@ -60,21 +60,21 @@ const props = defineProps({
 
 defineEmits(['click'])
 
-const statusLabel = computed(() => props.order.statusLabel || 'Открыт')
-const statusType = computed(() => props.order.statusType || 'open')
-const stateLabel = computed(() => props.order.stateLabel || 'Новый')
-const stateColor = computed(() => props.order.stateColor || 'green')
-const timerLabel = computed(() => props.order.timerLabel || 'Ожидание:')
+const statusLabel = computed(() => props.order.order_status_label || 'Открыт')
+const statusType = computed(() => props.order.order_status_type || 'open')
+const stateLabel = computed(() => props.order.request_status_label || 'Новый')
+const stateColor = computed(() => props.order.request_status_color || 'green')
+const timerLabel = computed(() => props.order.timer_label || 'Ожидание:')
 const timerValue = computed(() => props.order.timer || '—')
-const timerColor = computed(() => props.order.timerColor || 'green')
+const timerColor = computed(() => props.order.timer_color || 'green')
 
 const timerStroke = computed(() => {
     const map = { green: '#3AB88D', orange: '#F7630C', red: '#E10101' }
-    return map[props.order.timerColor] || '#3AB88D'
+    return map[props.order.timer_color] || '#3AB88D'
 })
 
 const managerName = computed(() => {
-    if (props.order.isSelf) return '(Вы)'
+    if (props.order.is_self) return '(Вы)'
     return props.order.manager || 'Не назначен'
 })
 </script>

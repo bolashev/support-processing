@@ -18,7 +18,7 @@
                         @click.stop="toggleItem(item.id)"
                     >
                         <div class="manager-dropdown-item-inner">
-                            <span class="manager-dropdown-item-name">{{ item.name }}</span>
+                            <span class="manager-dropdown-item-name">{{ item.name }}<template v-if="item.id === currentUserId"> (Вы)</template></span>
                             <svg v-if="isSelected(item.id)" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" stroke="#4699F1"/>
                                 <path d="M4.5 10.5L8 14L15.5 6.5" stroke="#4699F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -47,6 +47,7 @@ const props = defineProps({
     label: { type: String, default: '' },
     showSep: { type: Boolean, default: true },
     showCount: { type: Boolean, default: true },
+    currentUserId: { type: Number, default: null },
 })
 
 const emit = defineEmits(['update:selectedIds'])

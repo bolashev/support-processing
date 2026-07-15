@@ -9,14 +9,14 @@
         <div class="modal-section-fixed">
             <div class="modal-section">
                 <div class="modal-status">
-                    <div class="status-badge status-badge--open">Открыт</div>
+                    <div class="status-badge status-badge--open">{{ orderData.orderStatus || 'Открыт' }}</div>
                 </div>
 
                 <div class="modal-order-row">
-                    <div class="modal-order-number">Заказ № КЛ5-0154204</div>
+                    <div class="modal-order-number">Заказ № {{ orderData.number }}</div>
                     <div class="modal-state">
                         <span class="modal-state-dot modal-state-dot--green"></span>
-                        <span class="modal-state-label">Новый</span>
+                        <span class="modal-state-label">{{ orderData.requestStatus || 'Новый' }}</span>
                     </div>
                 </div>
             </div>
@@ -71,12 +71,12 @@
 
                 <div class="info-row">
                     <span class="info-label">Водитель:</span>
-                    <span class="info-value">{{ orderData.driver }}</span>
+                    <span class="info-value">{{ orderData.driver || '—' }}</span>
                 </div>
 
                 <div class="info-row">
                     <span class="info-label">Телефон водителя:</span>
-                    <span class="info-value info-value--link">{{ orderData.driverPhone }}</span>
+                    <span class="info-value info-value--link">{{ orderData.driverPhone || '—' }}</span>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
 
                 <div class="info-row">
                     <span class="info-label">Наименование:</span>
-                    <span class="info-value">{{ orderData.clientName }}</span>
+                    <span class="info-value">{{ orderData.counterpartyName }}</span>
                 </div>
 
                 <div class="info-row">
@@ -115,20 +115,20 @@
                     <div class="modal-manager">
                         <img class="modal-manager-avatar" src="https://placehold.co/43x43" alt="" />
                         <div class="modal-manager-info">
-                            <span class="modal-manager-name">Адволодкина Дарья Сергеевна</span>
-                            <span class="modal-manager-role">Ведущий менеджер по продажам</span>
+                            <span class="modal-manager-name">{{ orderData.salesManagerName || 'Не назначен' }}</span>
+                            <span class="modal-manager-role">{{ orderData.salesManagerPhone }}</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="info-row">
                     <span class="info-label">Номер телефона:</span>
-                    <span class="info-value info-value--link">+7 900 111-99-88</span>
+                    <span class="info-value info-value--link">{{ orderData.salesManagerPhone }}</span>
                 </div>
 
                 <div class="info-row">
                     <span class="info-label">Эл.почта</span>
-                    <span class="info-value info-value--link">avdolodkina@trapeza.ru</span>
+                    <span class="info-value info-value--link">{{ orderData.salesManagerEmail }}</span>
                 </div>
             </div>
         </div>

@@ -9,19 +9,22 @@ export const useOrdersStore = defineStore('orders', () => {
     const error = ref(null)
 
     const newOrders = computed(() =>
-        allOrders.value.filter(o => o.stateColor === 'green')
+        allOrders.value.filter(o => o.request_status_color === 'green')
     )
 
     const inProgressOrders = computed(() =>
-        allOrders.value.filter(o => o.stateColor === 'orange')
+        allOrders.value.filter(o => o.request_status_color === 'orange')
     )
 
     const shippedOrders = computed(() =>
-        allOrders.value.filter(o => o.stateColor === 'purple')
+        allOrders.value.filter(o => o.request_status_color === 'purple')
     )
 
     async function fetchOrders(params = {}) {
-        loading.value = true
+        const isFirstLoad = allOrders.value.length === 0
+        if (isFirstLoad) {
+            loading.value = true
+        }
         error.value = null
         try {
             const { data } = await ordersApi.getList(params)
@@ -29,7 +32,9 @@ export const useOrdersStore = defineStore('orders', () => {
         } catch (e) {
             error.value = e.response?.data?.message || 'Ошибка загрузки заявок'
         } finally {
-            loading.value = false
+            if (isFirstLoad) {
+                loading.value = false
+            }
         }
     }
 
