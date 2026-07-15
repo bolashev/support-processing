@@ -139,14 +139,27 @@
 import { ref, computed } from 'vue'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import { useOrdersStore } from '@/stores/orders'
 import EditableField from '@/components/ui/EditableField.vue'
 import Icon from '@/components/ui/Icon.vue'
 import DatePickerPopup from '@/components/ui/DatePicker/DatePickerPopup.vue'
 import { useDatePicker } from '@/components/ui/DatePicker/useDatePicker'
 
+function formatDate(date) {
+    if (!date) return null
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+}
+
 const props = defineProps({
     orderData: { type: Object, required: true },
+    orderId: { type: Number, required: true },
 })
+
+const store = useOrdersStore()
 
 const dateFieldRef = ref(null)
 
@@ -156,31 +169,45 @@ const {
     open, close, goPrev, goNext, onSelectDate, onHoverDate, getResult,
 } = useDatePicker()
 
+const fieldMap = {
+    deliveryMethod: 'delivery_method',
+    clientPhone: 'client_phone',
+    clientEmail: 'client_email',
+}
+
 const displayReserveDates = computed(() => {
-    const d = props.orderData.reserveDates
-    if (d?.start && d?.end) {
-        const start = format(d.start, 'dd.MM.yyyy', { locale: ru })
-        const end = format(d.end, 'dd.MM.yyyy', { locale: ru })
-        return `${start} — ${end}`
+    const start = props.orderData.reserveDateStart
+    const end = props.orderData.reserveDateEnd
+    if (start && end) {
+        return `${format(start, 'dd.MM.yyyy', { locale: ru })} — ${format(end, 'dd.MM.yyyy', { locale: ru })}`
     }
-    if (d?.start) {
-        return format(d.start, 'dd.MM.yyyy', { locale: ru })
+    if (start) {
+        return format(start, 'dd.MM.yyyy', { locale: ru })
     }
     return 'Не указано'
 })
 
 function openPicker(el) {
-    open(el, props.orderData.reserveDates)
+    open(el, { start: props.orderData.reserveDateStart, end: props.orderData.reserveDateEnd })
 }
 
-function applyDates() {
+async function applyDates() {
     const result = getResult()
-    props.orderData.reserveDates = result
-    onFieldSave('reserveDates', result)
+    props.orderData.reserveDateStart = result.start
+    props.orderData.reserveDateEnd = result.end
     close()
+
+    const startStr = formatDate(result.start)
+    const endStr = formatDate(result.end)
+    const value = startStr && endStr ? `${startStr} — ${endStr}` : startStr || null
+
+    await store.updateField(props.orderId, 'reserve_range', value)
 }
 
-const onFieldSave = (field, value) => {
-    console.log(`[OrderModal] Field "${field}" saved:`, value)
+async function onFieldSave(field, value) {
+    const backendField = fieldMap[field]
+    if (!backendField) return
+
+    await store.updateField(props.orderId, backendField, value)
 }
 </script>

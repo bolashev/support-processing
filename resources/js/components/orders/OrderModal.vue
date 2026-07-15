@@ -3,7 +3,7 @@
         <div v-if="visible" class="modal-overlay" @click.self="$emit('close')">
             <div v-if="store.currentOrder" class="modal-container">
                 <div class="modal-panels">
-                    <OrderInfoPanel :order-data="orderData" />
+                    <OrderInfoPanel :order-data="orderData" :order-id="store.currentOrder.id" />
                     <OrderDocsPanel :documents="documents" />
                     <OrderHistoryPanel
                         :order-id="store.currentOrder.id"
@@ -105,7 +105,8 @@ const orderData = computed(() => {
         salesManagerPhone: o.sales_manager_phone,
         processingAt: o.processing_at,
         assignedAt: o.assigned_at,
-        reserveDate: o.reserve_date,
+        reserveDateStart: o.reserve_date_start_at,
+        reserveDateEnd: o.reserve_date_end_at,
         manager: o.manager,
     }
 })

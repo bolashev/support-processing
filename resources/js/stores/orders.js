@@ -66,10 +66,21 @@ export const useOrdersStore = defineStore('orders', () => {
     }
 
     async function updateField(id, field, value) {
-        const { data } = await ordersApi.updateField(id, field, value)
-        currentOrder.value = data.data
-        await fetchOrders()
-        return data.data
+        await ordersApi.updateField(id, field, value)
+        if (currentOrder.value && currentOrder.value.id === id) {
+            if (field === 'reserve_range') {
+                if (value) {
+                    const parts = value.split(' — ')
+                    currentOrder.value.reserve_date_start_at = parts[0] ? parts[0] + ' 00:00:00' : null
+                    currentOrder.value.reserve_date_end_at = (parts[1] || parts[0]) ? (parts[1] || parts[0]) + ' 23:59:59' : null
+                } else {
+                    currentOrder.value.reserve_date_start_at = null
+                    currentOrder.value.reserve_date_end_at = null
+                }
+            } else {
+                currentOrder.value[field] = value
+            }
+        }
     }
 
     async function addComment(id, body, isInternal = false) {

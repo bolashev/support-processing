@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderDocumentType;
+use App\Models\Traits\SerializeDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class OrderDocument extends Model
 {
-    use HasFactory;
+    use HasFactory, SerializeDate;
 
     protected $guarded = ['_token', '_method'];
 

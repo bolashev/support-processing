@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\SerializeDate;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -17,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Role extends Model
 {
+    use SerializeDate;
+
     protected $fillable = ['name', 'slug'];
 
     public function users(): BelongsToMany

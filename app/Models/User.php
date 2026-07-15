@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\SerializeDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,7 +24,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SerializeDate;
 
     protected $fillable = [
         'bitrix_id',

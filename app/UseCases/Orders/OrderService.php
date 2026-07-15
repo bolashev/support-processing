@@ -63,7 +63,7 @@ final readonly class OrderService
             'new_values' => ['request_status' => OrderRequestStatus::InProgress->value],
         ]);
 
-        return $order->refresh();
+        return $order->refresh()->load('manager');
     }
 
     public function return(OrderReturnData $data): Order
@@ -95,20 +95,25 @@ final readonly class OrderService
             ]);
         }
 
-        return $order->refresh();
+        return $order->refresh()->load('manager');
     }
 
-    public function updateField(OrderUpdateFieldData $data): Order
+    public function updateField(OrderUpdateFieldData $data): void
     {
         $order = $data->order;
 
         $allowedFields = [
             'payment_method', 'delivery_method', 'client_phone',
-            'client_email', 'reserve_date', 'counterparty_name',
+            'client_email', 'reserve_range', 'counterparty_name',
         ];
 
         if (! in_array($data->field, $allowedFields, true)) {
             throw new \DomainException("Поле {$data->field} нельзя редактировать");
+        }
+
+        if ($data->field === 'reserve_range') {
+            $this->saveReserveRange($order, $data->value, $data->user_id);
+            return;
         }
 
         $oldValue = $order->{$data->field};
@@ -120,8 +125,34 @@ final readonly class OrderService
             'old_values' => [$data->field => $oldValue],
             'new_values' => [$data->field => $data->value],
         ]);
+    }
 
-        return $order->refresh();
+    private function saveReserveRange(Order $order, ?string $value, int $userId): void
+    {
+        $oldStart = $order->reserve_date_start_at?->format('Y-m-d');
+        $oldEnd = $order->reserve_date_end_at?->format('Y-m-d');
+        $oldValue = $oldStart && $oldEnd ? "{$oldStart} — {$oldEnd}" : $oldStart;
+
+        $startAt = null;
+        $endAt = null;
+
+        if ($value) {
+            $parts = array_map('trim', explode('—', $value));
+            $startAt = $parts[0] ? $parts[0] . ' 00:00:00' : null;
+            $endAt = ($parts[1] ?? $parts[0]) ? ($parts[1] ?? $parts[0]) . ' 23:59:59' : null;
+        }
+
+        $order->update([
+            'reserve_date_start_at' => $startAt,
+            'reserve_date_end_at' => $endAt,
+        ]);
+
+        $order->history()->create([
+            'user_id' => $userId,
+            'action' => 'field_updated',
+            'old_values' => ['reserve_range' => $oldValue],
+            'new_values' => ['reserve_range' => $value],
+        ]);
     }
 
     public function addComment(OrderCommentData $data): Order
@@ -140,6 +171,6 @@ final readonly class OrderService
             'new_values' => ['body' => $data->body, 'is_internal' => $data->is_internal],
         ]);
 
-        return $order->refresh();
+        return $order->refresh()->load('manager');
     }
 }

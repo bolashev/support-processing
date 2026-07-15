@@ -17,7 +17,7 @@ api.interceptors.response.use(
             || 'Произошла ошибка'
 
         if (typeof window !== 'undefined' && window.__toastsStore) {
-            window.__toastsStore.error(message)
+            window.__toastsStore.error(message, 60000)
         }
 
         return Promise.reject(error)

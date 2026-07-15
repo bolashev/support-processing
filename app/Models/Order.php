@@ -5,14 +5,13 @@ namespace App\Models;
 use App\Enums\OrderChannel;
 use App\Enums\OrderRequestStatus;
 use App\Enums\OrderStatus;
+use App\Models\Traits\SerializeDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @mixin \Eloquent
@@ -41,7 +40,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property Carbon|null $processing_at
  * @property Carbon|null $assigned_at
  * @property Carbon|null $shipped_at
- * @property Carbon|null $reserve_date
+ * @property Carbon|null $reserve_date_start_at
+ * @property Carbon|null $reserve_date_end_at
  * @property bool $debt_control_disabled
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -57,7 +57,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, SerializeDate;
 
     protected $guarded = ['_token', '_method'];
 
@@ -74,7 +74,8 @@ class Order extends Model
             'processing_at' => 'datetime',
             'assigned_at' => 'datetime',
             'shipped_at' => 'datetime',
-            'reserve_date' => 'datetime',
+            'reserve_date_start_at' => 'datetime',
+            'reserve_date_end_at' => 'datetime',
         ];
     }
 

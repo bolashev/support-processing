@@ -17,6 +17,7 @@ use App\Http\Requests\Orders\OrderCommentRequest;
 use App\Http\Requests\Orders\OrderListRequest;
 use App\Http\Requests\Orders\OrderReturnRequest;
 use App\Http\Requests\Orders\OrderUpdateFieldRequest;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ArchiveOrderResource;
 use App\Http\Resources\NoteResource;
 use App\Http\Resources\OrderDetailResource;
@@ -77,18 +78,20 @@ class OrderController extends Controller
         );
     }
 
-    public function updateField(Order $order, OrderUpdateFieldRequest $request)
+    public function updateField(Order $order, OrderUpdateFieldRequest $request): JsonResponse
     {
-        return $this->handleTransaction(fn () =>
-            new OrderDetailResource($this->orders->updateField(
+        return $this->handleTransaction(function () use ($order, $request) {
+            $this->orders->updateField(
                 new OrderUpdateFieldData(
                     order: $order,
                     user_id: auth()->id(),
                     field: $request['field'],
                     value: $request['value'],
                 ),
-            ))
-        );
+            );
+
+            return response()->json(['success' => true]);
+        });
     }
 
     public function addComment(Order $order, OrderCommentRequest $request)

@@ -50,7 +50,8 @@ class OrderDetailResource extends JsonResource
             'processing_at' => $this->processing_at?->format('Y-m-d H:i:s'),
             'assigned_at' => $this->assigned_at?->format('Y-m-d H:i:s'),
             'shipped_at' => $this->shipped_at?->format('Y-m-d H:i:s'),
-            'reserve_date' => $this->reserve_date?->format('Y-m-d H:i:s'),
+            'reserve_date_start_at' => $this->reserve_date_start_at?->format('Y-m-d H:i:s'),
+            'reserve_date_end_at' => $this->reserve_date_end_at?->format('Y-m-d H:i:s'),
 
             'debt_control_disabled' => $this->debt_control_disabled,
 
