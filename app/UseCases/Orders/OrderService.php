@@ -15,6 +15,8 @@ final readonly class OrderService
 {
     public function getList(OrderListData $data): LengthAwarePaginator
     {
+        $user = auth()->user();
+
         $query = Order::with(['manager', 'comments'])
             ->when($data->search, function (Builder $query, string $search) {
                 $query->where(function (Builder $q) use ($search) {
@@ -27,6 +29,12 @@ final readonly class OrderService
             })
             ->when($data->manager_ids, function (Builder $query, array $managerIds) {
                 $query->whereIn('manager_id', $managerIds);
+            })
+            ->when($user && ! $user->hasRole('admin'), function (Builder $query) use ($user) {
+                $query->where(function (Builder $q) use ($user) {
+                    $q->where('manager_id', $user->id)
+                        ->orWhereNull('manager_id');
+                });
             });
 
         return $query->when($data->shipped_sort, function (Builder $query, string $direction) {

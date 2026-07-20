@@ -63,6 +63,9 @@ class OrderDetailResource extends JsonResource
                 'email' => $this->manager->email,
                 'phone' => $this->manager->phone,
                 'position' => $this->manager->position,
+                'avatar_url' => $this->manager->avatar_url
+                    ? config('services.bitrix_sso.portal_url') . $this->manager->avatar_url
+                    : null,
             ]),
 
             'items' => OrderItemResource::collection($this->whenLoaded('items')),

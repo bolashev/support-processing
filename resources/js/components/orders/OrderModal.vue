@@ -13,7 +13,7 @@
 
                 <div class="modal-actions">
                     <button
-                        v-if="store.currentOrder.request_status === 'new'"
+                        v-if="canManage && store.currentOrder.request_status === 'new'"
                         class="modal-btn modal-btn--primary"
                         @click="takeOrder"
                     >
@@ -32,12 +32,12 @@
                         <span>Расходная накладная</span>
                     </button>
                     <button
-                        v-if="store.currentOrder.request_status !== 'completed'"
+                        v-if="canManage && store.currentOrder.request_status !== 'completed'"
                         class="modal-btn modal-btn--secondary"
                         @click="showReturnModal = true"
                     >
                         <Icon name="cancel" :size="20" color="#282828" />
-                        <span>Вернуть заявку</span>
+                        <span>Вернуть заказ</span>
                     </button>
                 </div>
             </div>
@@ -55,6 +55,7 @@
 import { computed, watch } from 'vue'
 import { useOrdersStore } from '@/stores/orders'
 import { useManagersStore } from '@/stores/managers'
+import { useAccountStore } from '@/stores/account'
 import Icon from '@/components/ui/Icon.vue'
 import OrderInfoPanel from './OrderInfoPanel.vue'
 import OrderDocsPanel from './OrderDocsPanel.vue'
@@ -68,6 +69,9 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 const store = useOrdersStore()
 const managersStore = useManagersStore()
+const accountStore = useAccountStore()
+
+const canManage = computed(() => accountStore.canManageOrders)
 
 watch(() => props.visible, (val) => {
     document.body.style.overflow = val ? 'hidden' : ''

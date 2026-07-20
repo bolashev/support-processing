@@ -4,7 +4,7 @@
             <ManagerDropdown
                 :items="managersStore.items"
                 v-model:selected-ids="selectedIds"
-                prefix="Менеджер заявки:"
+                prefix="Менеджер заказа:"
                 :label="selectedLabel"
                 :show-sep="showCounter"
                 :show-count="showCounter"

@@ -32,12 +32,18 @@
                 </div>
 
                 <EditableField
+                    v-if="canManage"
                     v-model="orderData.deliveryMethod"
                     label="Способ доставки:"
                     @save="onFieldSave('deliveryMethod', $event)"
                 />
+                <div v-else class="info-row">
+                    <span class="info-label">Способ доставки:</span>
+                    <span class="info-value">{{ orderData.deliveryMethod || '—' }}</span>
+                </div>
 
                 <div
+                    v-if="canManage"
                     ref="dateFieldRef"
                     class="editable-field"
                     @click="openPicker(dateFieldRef)"
@@ -49,6 +55,10 @@
                     <span class="editable-field__icon">
                         <Icon name="edit" :size="16" color="#959595" />
                     </span>
+                </div>
+                <div v-else class="info-row">
+                    <span class="info-label">Даты резерва:</span>
+                    <span class="info-value">{{ displayReserveDates }}</span>
                 </div>
 
                 <DatePickerPopup
@@ -94,18 +104,28 @@
                 </div>
 
                 <EditableField
+                    v-if="canManage"
                     v-model="orderData.clientPhone"
                     label="Телефон:"
                     link
                     @save="onFieldSave('clientPhone', $event)"
                 />
+                <div v-else class="info-row">
+                    <span class="info-label">Телефон:</span>
+                    <span class="info-value info-value--link">{{ orderData.clientPhone || '—' }}</span>
+                </div>
 
                 <EditableField
+                    v-if="canManage"
                     v-model="orderData.clientEmail"
                     label="Эл.почта:"
                     link
                     @save="onFieldSave('clientEmail', $event)"
                 />
+                <div v-else class="info-row">
+                    <span class="info-label">Эл.почта:</span>
+                    <span class="info-value info-value--link">{{ orderData.clientEmail || '—' }}</span>
+                </div>
             </div>
 
             <div class="info-block">
@@ -113,7 +133,7 @@
 
                 <div class="info-row">
                     <div class="modal-manager">
-                        <img class="modal-manager-avatar" src="https://placehold.co/43x43" alt="" />
+                        <img class="modal-manager-avatar" :src="orderData.manager?.avatar_url || 'https://placehold.co/43x43'" alt="" />
                         <div class="modal-manager-info">
                             <span class="modal-manager-name">{{ orderData.manager?.name || 'Не назначен' }}</span>
                             <span v-if="orderData.manager?.position" class="modal-manager-role">{{ orderData.manager.position }}</span>
@@ -140,6 +160,7 @@ import { ref, computed } from 'vue'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useOrdersStore } from '@/stores/orders'
+import { useAccountStore } from '@/stores/account'
 import EditableField from '@/components/ui/EditableField.vue'
 import Icon from '@/components/ui/Icon.vue'
 import DatePickerPopup from '@/components/ui/DatePicker/DatePickerPopup.vue'
@@ -160,6 +181,9 @@ const props = defineProps({
 })
 
 const store = useOrdersStore()
+const accountStore = useAccountStore()
+
+const canManage = computed(() => accountStore.canManageOrders)
 
 const dateFieldRef = ref(null)
 

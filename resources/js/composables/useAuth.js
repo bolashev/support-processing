@@ -1,7 +1,10 @@
-import { ref } from 'vue'
-
-const user = ref(window.__INITIAL_USER__ || null)
+import { computed } from 'vue'
+import { useAccountStore } from '@/stores/account'
 
 export function useAuth() {
-    return { user }
+    const accountStore = useAccountStore()
+
+    return {
+        user: computed(() => accountStore.user),
+    }
 }

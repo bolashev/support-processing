@@ -6,7 +6,7 @@ const routes = [
         path: '/incoming',
         name: 'incoming',
         component: () => import('../pages/IncomingPage.vue'),
-        meta: { title: 'Входящие заявки' },
+        meta: { title: 'Входящие заказы' },
     },
     {
         path: '/archive',

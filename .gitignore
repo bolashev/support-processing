@@ -20,6 +20,8 @@
 /storage/pail
 /vendor
 AGENTS.md
+docs/
+NGROK.md
 Homestead.json
 Homestead.yaml
 Thumbs.db

@@ -6,7 +6,7 @@
                     <ManagerDropdown
                         :items="managersStore.items"
                         v-model:selected-ids="selectedManagerIds"
-                        prefix="Менеджер заявки:"
+                        prefix="Менеджер заказа:"
                         :show-sep="selectedManagerIds.length > 0 && selectedManagerIds.length < managersStore.items.length"
                         :show-count="selectedManagerIds.length > 0 && selectedManagerIds.length < managersStore.items.length"
                     />
@@ -83,7 +83,7 @@ const columns = [
     { key: 'number', label: 'Номер заказа', width: '180px' },
     { key: 'processing_time', label: 'Время обработки', width: '180px', sortable: true },
     { key: 'shipped_at', label: 'Дата и время', width: '180px', sortable: true },
-    { key: 'manager_name', label: 'Менеджер заявки', width: '220px' },
+    { key: 'manager_name', label: 'Менеджер заказа', width: '220px' },
 ]
 
 onMounted(() => {

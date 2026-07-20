@@ -66,8 +66,10 @@ final class SSOController
         $user = User::updateOrCreate(
             ['bitrix_id' => $payload['bitrix_id']],
             [
-                'name'  => $payload['name'] ?? 'Unknown',
-                'email' => $payload['email'] ?? 'unknown@portal.trapeza.ru',
+                'uid_1c'     => $payload['uid_1c'] ?? null,
+                'name'       => $payload['name'] ?? 'Unknown',
+                'email'      => $payload['email'] ?? 'unknown@portal.trapeza.ru',
+                'avatar_url' => $payload['avatar_url'] ?? null,
             ],
         );
 

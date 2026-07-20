@@ -2,7 +2,7 @@
     <div class="nav-card-header">
         <div class="nav-card-content">
             <div class="nav-title-block">
-                <span class="nav-title">Работа с заявками</span>
+                <span class="nav-title">Работа с заказами</span>
             </div>
             <div class="nav-tabs-row">
                 <router-link
@@ -28,7 +28,7 @@
 const tabs = [
     {
         to: '/incoming',
-        label: 'Входящие заявки',
+        label: 'Входящие заказы',
         iconPath: 'M4.16634 12.5L9.99967 18.3333L15.833 12.5M9.99967 18.3333L9.99967 6.66665M9.16634 2.49998C9.16634 2.03974 9.53944 1.66665 9.99967 1.66665C10.4599 1.66665 10.833 2.03974 10.833 2.49998C10.833 2.96022 10.4599 3.33331 9.99967 3.33331C9.53944 3.33331 9.16634 2.96022 9.16634 2.49998Z',
     },
     {

@@ -13,8 +13,10 @@ use Illuminate\Notifications\Notifiable;
  * @mixin \Eloquent
  * @property int $id
  * @property int|null $bitrix_id
+ * @property string|null $uid_1c
  * @property string $name
  * @property string $email
+ * @property string|null $avatar_url
  * @property string|null $phone
  * @property string|null $position
  * @property Carbon $created_at
@@ -28,8 +30,10 @@ class User extends Authenticatable
 
     protected $fillable = [
         'bitrix_id',
+        'uid_1c',
         'name',
         'email',
+        'avatar_url',
         'phone',
         'position',
     ];

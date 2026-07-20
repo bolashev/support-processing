@@ -6,7 +6,7 @@
 
         <div class="section-block">
             <div class="section-title-row">
-                <span class="section-title">Входящие заявки</span>
+                <span class="section-title">Входящие заказы</span>
             </div>
             <div v-if="store.loading && !store.allOrders.length" class="loading-state">Загрузка...</div>
             <div v-else class="columns-wrap" :class="{ 'columns-wrap--loading': store.loading }">
@@ -14,7 +14,7 @@
                     <KanbanColumn
                         title="Новые"
                         :cards="store.newOrders"
-                        empty-text="Пока здесь пусто.<br>Как только появятся новые заявки,<br>они отобразятся в этом списке"
+                        empty-text="Пока здесь пусто.<br>Как только появятся новые заказы,<br>они отобразятся в этом списке"
                         @card-click="openOrder"
                     />
                     <KanbanColumn

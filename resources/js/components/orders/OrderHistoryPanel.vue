@@ -20,7 +20,7 @@
                 class="modal-comment"
             >
                 <div class="modal-comment-header">
-                    <img class="modal-comment-avatar" :src="comment.avatar || 'https://placehold.co/30x30'" alt="" />
+                    <img class="modal-comment-avatar" :src="comment.user?.avatar_url || 'https://placehold.co/30x30'" alt="" />
                     <span class="modal-comment-author">{{ comment.user?.name || 'Аноним' }}</span>
                 </div>
                 <div class="modal-comment-bubble">

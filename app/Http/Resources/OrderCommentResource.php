@@ -21,6 +21,9 @@ class OrderCommentResource extends JsonResource
             'user' => $this->whenLoaded('user', fn () => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
+                'avatar_url' => $this->user->avatar_url
+                    ? config('services.bitrix_sso.portal_url') . $this->user->avatar_url
+                    : null,
             ]),
         ];
     }

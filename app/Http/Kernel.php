@@ -17,6 +17,8 @@ class Kernel
             $middleware->alias($this->aliases);
         }
 
+        $middleware->statefulApi();
+
         return $middleware;
     }
 }
