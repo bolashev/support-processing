@@ -4,10 +4,10 @@ namespace App\Http\Resources;
 
 use App\Enums\OrderRequestStatus;
 use App\Enums\OrderStatus;
+use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
-use App\Models\Order;
 
 /**
  * @mixin Order
@@ -22,6 +22,8 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'number' => $this->number,
             'counterparty' => $this->counterparty_name,
+            'client_type' => $this->client_type?->value,
+            'client_type_label' => $this->client_type?->label(),
             'order_status_label' => $this->order_status->label(),
             'order_status_type' => $this->mapStatusType(),
             'request_status_label' => $requestStatus->label(),
@@ -98,7 +100,7 @@ class OrderResource extends JsonResource
         };
     }
 
-    private function colorByMinutes(\Carbon\Carbon $from, array $thresholds, bool $useYellowOnly = false): string
+    private function colorByMinutes(Carbon $from, array $thresholds, bool $useYellowOnly = false): string
     {
         $minutes = (int) $from->diffInSeconds(now()) / 60;
 
@@ -113,7 +115,7 @@ class OrderResource extends JsonResource
         return $minutes >= $thresholds[0] ? 'orange' : 'green';
     }
 
-    private function formatWorkingTime(\Carbon\Carbon $from): string
+    private function formatWorkingTime(Carbon $from): string
     {
         $seconds = (int) $from->diffInSeconds(now());
         $hours = intdiv($seconds, 3600);
@@ -126,7 +128,7 @@ class OrderResource extends JsonResource
         return sprintf('%d мин.', $minutes);
     }
 
-    private function formatWorkingTimeDiff(\Carbon\Carbon $start, \Carbon\Carbon $end): string
+    private function formatWorkingTimeDiff(Carbon $start, Carbon $end): string
     {
         $seconds = (int) $start->diffInSeconds($end);
         $hours = intdiv($seconds, 3600);

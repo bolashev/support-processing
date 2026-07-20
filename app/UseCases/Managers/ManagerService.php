@@ -10,13 +10,21 @@ final readonly class ManagerService
 {
     public function getList(): Collection
     {
+        $user = auth()->user();
+        $directions = $user->getDirectionValues();
+
         $managerIds = Order::whereNotNull('manager_id')
             ->distinct()
             ->pluck('manager_id');
 
-        return User::whereHas('roles', fn ($q) => $q->where('slug', 'support_manager'))
+        $query = User::whereHas('roles', fn ($q) => $q->where('slug', 'support_manager'))
             ->whereIn('id', $managerIds)
-            ->orderBy('name')
-            ->get(['id', 'name']);
+            ->orderBy('name');
+
+        if (! $user->hasRole('admin') && ! $user->hasRole('root') && ! empty($directions)) {
+            $query->whereHas('directions', fn ($q) => $q->whereIn('slug', $directions));
+        }
+
+        return $query->get(['id', 'name']);
     }
 }

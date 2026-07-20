@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ClientType;
 use App\Enums\OrderChannel;
 use App\Enums\OrderRequestStatus;
 use App\Enums\OrderStatus;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin \Eloquent
+ *
  * @property int $id
  * @property int|null $bitrix_id
  * @property string $number
@@ -30,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property float|null $delivery_cost
  * @property bool $delivery_became_paid
  * @property OrderChannel|null $channel
+ * @property ClientType|null $client_type
  * @property string|null $sales_manager_name
  * @property string|null $sales_manager_email
  * @property string|null $sales_manager_phone
@@ -45,7 +48,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $debt_control_disabled
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read User|null $manager
  * @property-read Carbon|null $waiting_time
  * @property-read Carbon|null $working_time
@@ -54,6 +56,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Order byOrderStatus(OrderStatus $status)
  * @method static Builder|Order forManager(int $userId)
  * @method static Builder|Order shipped()
+ * @method static Builder|Order byClientTypes(array $clientTypes)
  */
 class Order extends Model
 {
@@ -67,6 +70,7 @@ class Order extends Model
             'request_status' => OrderRequestStatus::class,
             'order_status' => OrderStatus::class,
             'channel' => OrderChannel::class,
+            'client_type' => ClientType::class,
             'amount' => 'decimal:2',
             'delivery_cost' => 'decimal:2',
             'delivery_became_paid' => 'boolean',
@@ -122,5 +126,10 @@ class Order extends Model
     public function scopeShipped(Builder $query): Builder
     {
         return $query->where('request_status', OrderRequestStatus::Completed);
+    }
+
+    public function scopeByClientTypes(Builder $query, array $clientTypes): Builder
+    {
+        return $query->whereIn('client_type', $clientTypes);
     }
 }

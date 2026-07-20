@@ -8,7 +8,13 @@ export const useAccountStore = defineStore('account', () => {
 
     const isAdmin = computed(() => user.value?.roles?.includes('admin') ?? false)
     const isSupportManager = computed(() => user.value?.roles?.includes('support_manager') ?? false)
+    const isRoot = computed(() => user.value?.roles?.includes('root') ?? false)
     const canManageOrders = computed(() => isSupportManager.value && !isAdmin.value)
+    const directions = computed(() => user.value?.directions ?? [])
+
+    function hasDirection(direction) {
+        return directions.value.includes(direction)
+    }
 
     async function fetchAccount() {
         loading.value = true
@@ -32,7 +38,10 @@ export const useAccountStore = defineStore('account', () => {
         loading,
         isAdmin,
         isSupportManager,
+        isRoot,
         canManageOrders,
+        directions,
+        hasDirection,
         fetchAccount,
         $reset,
     }

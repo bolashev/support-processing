@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Carbon $updated_at
  * @property-read Collection<User> $users
  */
-class Role extends Model
+class Direction extends Model
 {
     use SerializeDate;
 
@@ -26,6 +26,6 @@ class Role extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_roles');
+        return $this->belongsToMany(User::class, 'user_directions');
     }
 }

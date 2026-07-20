@@ -30,16 +30,19 @@ final readonly class OrderService
             ->when($data->manager_ids, function (Builder $query, array $managerIds) {
                 $query->whereIn('manager_id', $managerIds);
             })
-            ->when($user && ! $user->hasRole('admin'), function (Builder $query) use ($user) {
-                $query->where(function (Builder $q) use ($user) {
-                    $q->where('manager_id', $user->id)
-                        ->orWhereNull('manager_id');
-                });
+            ->when($user && ! $user->hasRole('admin') && ! $user->hasRole('root'), function (Builder $query) use ($user) {
+                $directions = $user->getDirectionValues();
+                if (! empty($directions)) {
+                    $query->where(function (Builder $q) use ($user, $directions) {
+                        $q->where('manager_id', $user->id)
+                            ->orWhereIn('client_type', $directions);
+                    });
+                }
             });
 
         return $query->when($data->shipped_sort, function (Builder $query, string $direction) {
-                $query->orderBy('shipped_at', $direction);
-            })
+            $query->orderBy('shipped_at', $direction);
+        })
             ->orderBy('created_at', 'desc')
             ->paginate($data->per_page);
     }
@@ -56,6 +59,15 @@ final readonly class OrderService
 
         if ($order->request_status !== OrderRequestStatus::New) {
             throw new \DomainException('Заказ уже взят в работу');
+        }
+
+        $user = auth()->user();
+        $directions = $user->getDirectionValues();
+
+        if (! $user->hasRole('admin') && ! $user->hasRole('root')
+            && ! empty($directions) && $order->client_type
+            && ! in_array($order->client_type->value, $directions)) {
+            throw new \DomainException('Заказ не принадлежит вашему направлению');
         }
 
         $order->update([
@@ -80,6 +92,10 @@ final readonly class OrderService
 
         if ($order->request_status !== OrderRequestStatus::InProgress) {
             throw new \DomainException('Можно вернуть только заявку в работе');
+        }
+
+        if ($order->manager_id !== $data->user_id) {
+            throw new \DomainException('Можно вернуть только свой заказ');
         }
 
         $order->update([
@@ -110,6 +126,10 @@ final readonly class OrderService
     {
         $order = $data->order;
 
+        if ($order->manager_id !== $data->user_id) {
+            throw new \DomainException('Можно редактировать только свой заказ');
+        }
+
         $allowedFields = [
             'payment_method', 'delivery_method', 'client_phone',
             'client_email', 'reserve_range', 'counterparty_name',
@@ -121,6 +141,7 @@ final readonly class OrderService
 
         if ($data->field === 'reserve_range') {
             $this->saveReserveRange($order, $data->value, $data->user_id);
+
             return;
         }
 
@@ -146,8 +167,8 @@ final readonly class OrderService
 
         if ($value) {
             $parts = array_map('trim', explode('—', $value));
-            $startAt = $parts[0] ? $parts[0] . ' 00:00:00' : null;
-            $endAt = ($parts[1] ?? $parts[0]) ? ($parts[1] ?? $parts[0]) . ' 23:59:59' : null;
+            $startAt = $parts[0] ? $parts[0].' 00:00:00' : null;
+            $endAt = ($parts[1] ?? $parts[0]) ? ($parts[1] ?? $parts[0]).' 23:59:59' : null;
         }
 
         $order->update([

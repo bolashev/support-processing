@@ -20,6 +20,7 @@ class AccountResource extends JsonResource
             'phone' => $this->phone,
             'position' => $this->position,
             'roles' => $this->roles->pluck('slug'),
+            'directions' => $this->getDirectionValues(),
         ];
     }
 }

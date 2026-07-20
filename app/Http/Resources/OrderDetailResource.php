@@ -27,6 +27,8 @@ class OrderDetailResource extends JsonResource
             'order_status_type' => $this->mapStatusType(),
             'channel' => $this->channel?->value,
             'channel_label' => $this->channel?->label(),
+            'client_type' => $this->client_type?->value,
+            'client_type_label' => $this->client_type?->label(),
 
             'counterparty_name' => $this->counterparty_name,
             'counterparty_partner' => $this->counterparty_partner,
@@ -64,7 +66,7 @@ class OrderDetailResource extends JsonResource
                 'phone' => $this->manager->phone,
                 'position' => $this->manager->position,
                 'avatar_url' => $this->manager->avatar_url
-                    ? config('services.bitrix_sso.portal_url') . $this->manager->avatar_url
+                    ? config('services.bitrix_sso.portal_url').$this->manager->avatar_url
                     : null,
             ]),
 
