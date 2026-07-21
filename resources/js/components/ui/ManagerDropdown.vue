@@ -2,15 +2,16 @@
     <div ref="containerRef" class="manager-dropdown" @click="toggle">
         <span v-if="prefix" class="manager-dropdown-prefix">{{ prefix }}</span>
         <span class="manager-dropdown-label">{{ displayLabel }}</span>
-        <span class="manager-dropdown-sep" v-if="showSep">·</span>
-        <span class="manager-dropdown-count" v-if="showCount">{{ displayCount }}</span>
+        <span class="manager-dropdown-sep" v-if="showSep && displayCount !== null">·</span>
+        <span class="manager-dropdown-count" v-if="showCount && displayCount !== null">{{ displayCount }}</span>
         <div class="manager-dropdown-chevron" :class="{ 'manager-dropdown-chevron--open': open }">
             <Icon name="chevron-down" :size="20" color="#282828" />
         </div>
 
         <div v-if="open" class="manager-dropdown-list" @click.stop>
             <div class="manager-dropdown-list-inner">
-                <div class="manager-dropdown-list-scroll">
+                <div v-if="items.length === 0" class="manager-dropdown-empty">Нет менеджеров</div>
+                <div v-else class="manager-dropdown-list-scroll">
                     <div
                         v-for="item in items"
                         :key="item.id"
@@ -60,11 +61,13 @@ const isNoneSelected = computed(() => props.selectedIds.length === 0)
 
 const displayLabel = computed(() => {
     if (props.label) return props.label
+    if (props.items.length === 0) return 'Нет менеджеров'
     if (isNoneSelected.value || isAllSelected.value) return 'Все менеджеры'
     return 'Выбрано'
 })
 
 const displayCount = computed(() => {
+    if (props.items.length === 0) return null
     if (isNoneSelected.value || isAllSelected.value) return props.items.length
     return props.selectedIds.length
 })

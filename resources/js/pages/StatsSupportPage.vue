@@ -47,7 +47,7 @@ const { sortKey, sortDirection, toggleSort } = useSort()
 
 const columns = [
     { key: 'name', label: 'ФИО менеджера', width: '180px', sortable: true },
-    { key: 'accepted', label: 'Принято заявок', width: '154px', sortable: true },
+    { key: 'accepted', label: 'Принято заказов', width: '154px', sortable: true },
     { key: 'receiveTime', label: 'Время на прием', width: '135px', sortable: true },
     { key: 'returnWork', label: 'Работа с возвратом', width: '157px', sortable: true },
     { key: 'shipmentWork', label: 'Работа с отгрузкой', width: '157px', sortable: true },

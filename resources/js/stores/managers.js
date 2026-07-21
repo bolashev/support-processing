@@ -6,10 +6,10 @@ export const useManagersStore = defineStore('managers', () => {
     const items = ref([])
     const loading = ref(false)
 
-    async function fetchManagers() {
+    async function fetchManagers(params = {}) {
         loading.value = true
         try {
-            const { data } = await managersApi.getList()
+            const { data } = await managersApi.getList(params)
             items.value = data.data
         } catch (e) {
             // silent

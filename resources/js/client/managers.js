@@ -1,7 +1,7 @@
 import { api } from '@/bootstrap'
 
 export const managers = {
-    getList() {
-        return api.get('/managers')
+    getList(params = {}) {
+        return api.get('/managers', { params })
     },
 }

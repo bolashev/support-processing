@@ -91,7 +91,7 @@ final readonly class OrderService
         $order = $data->order;
 
         if ($order->request_status !== OrderRequestStatus::InProgress) {
-            throw new \DomainException('Можно вернуть только заявку в работе');
+            throw new \DomainException('Можно вернуть только заказ в работе');
         }
 
         if ($order->manager_id !== $data->user_id) {

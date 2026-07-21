@@ -56,6 +56,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Order byOrderStatus(OrderStatus $status)
  * @method static Builder|Order forManager(int $userId)
  * @method static Builder|Order shipped()
+ * @method static Builder|Order inPeriod(?string $period, ?string $date_from = null, ?string $date_to = null)
  * @method static Builder|Order byClientTypes(array $clientTypes)
  */
 class Order extends Model
@@ -126,6 +127,60 @@ class Order extends Model
     public function scopeShipped(Builder $query): Builder
     {
         return $query->where('request_status', OrderRequestStatus::Completed);
+    }
+
+    public function scopeInPeriod(Builder $query, ?string $period, ?string $date_from = null, ?string $date_to = null): Builder
+    {
+        $range = $this->resolvePeriodRange($period, $date_from, $date_to);
+
+        if ($range === null) {
+            return $query;
+        }
+
+        return $query->where('shipped_at', '>=', $range['from'])
+            ->where('shipped_at', '<=', $range['to']);
+    }
+
+    /**
+     * @return array{from: Carbon, to: Carbon}|null
+     */
+    private function resolvePeriodRange(?string $period, ?string $date_from, ?string $date_to): ?array
+    {
+        if ($period && in_array($period, ['yesterday', 'today', 'week', 'month'], true)) {
+            $now = Carbon::now();
+
+            return match ($period) {
+                'yesterday' => [
+                    'from' => $now->copy()->subDay()->startOfDay(),
+                    'to' => $now->copy()->subDay()->endOfDay(),
+                ],
+                'today' => [
+                    'from' => $now->copy()->startOfDay(),
+                    'to' => $now->copy()->endOfDay(),
+                ],
+                'week' => [
+                    'from' => $now->copy()->startOfWeek(),
+                    'to' => $now->copy()->endOfWeek(),
+                ],
+                'month' => [
+                    'from' => $now->copy()->startOfMonth(),
+                    'to' => $now->copy()->endOfMonth(),
+                ],
+            };
+        }
+
+        if ($period === 'custom' && ($date_from || $date_to)) {
+            $from = $date_from
+                ? Carbon::parse($date_from)->startOfDay()
+                : Carbon::minValue();
+            $to = $date_to
+                ? Carbon::parse($date_to)->endOfDay()
+                : Carbon::now();
+
+            return ['from' => $from, 'to' => $to];
+        }
+
+        return null;
     }
 
     public function scopeByClientTypes(Builder $query, array $clientTypes): Builder

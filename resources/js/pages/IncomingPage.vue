@@ -4,34 +4,49 @@
             <IncomingFilter />
         </template>
 
-        <div class="section-block">
+        <div class="section-block incoming-page">
             <div class="section-title-row">
                 <span class="section-title">Входящие заказы</span>
             </div>
-            <div v-if="store.loading && !store.allOrders.length" class="loading-state">Загрузка...</div>
-            <div v-else class="columns-wrap" :class="{ 'columns-wrap--loading': store.loading }">
+            <div v-if="store.anyInitialLoading && store.allEmpty" class="loading-state">Загрузка...</div>
+            <div v-else class="columns-wrap" :class="{ 'columns-wrap--loading': store.anyInitialLoading && store.allEmpty }">
                 <div class="columns-row">
                     <KanbanColumn
                         title="Новые"
-                        :cards="store.newOrders"
+                        :items="store.newOrders"
+                        :total="store.newTotal"
+                        :loading="store.columns.new.loading"
+                        :loading-more="store.columns.new.loadingMore"
+                        :has-more="store.newHasMore"
                         empty-text="Пока здесь пусто.<br>Как только появятся новые заказы,<br>они отобразятся в этом списке"
                         @card-click="openOrder"
+                        @load-more="loadMore('new')"
                     />
                     <KanbanColumn
                         title="В работе"
-                        :cards="store.inProgressOrders"
-                        empty-text="Нет заявок в работе"
+                        :items="store.inProgressOrders"
+                        :total="store.inProgressTotal"
+                        :loading="store.columns.inProgress.loading"
+                        :loading-more="store.columns.inProgress.loadingMore"
+                        :has-more="store.inProgressHasMore"
+                        empty-text="Нет заказов в работе"
                         @card-click="openOrder"
+                        @load-more="loadMore('inProgress')"
                     />
                     <KanbanColumn
                         title="Отгруженные"
-                        :cards="store.shippedOrders"
+                        :items="store.shippedOrders"
+                        :total="store.shippedTotal"
+                        :loading="store.columns.shipped.loading"
+                        :loading-more="store.columns.shipped.loadingMore"
+                        :has-more="store.shippedHasMore"
                         :sortable="true"
                         :sort-direction="shippedSortDirection"
                         :sort-label="shippedSortLabel"
                         empty-text="Вы еще ничего не отгружали.<br>Все завершенные заказы будут<br>храниться здесь"
                         @card-click="openOrder"
                         @sort="toggleShippedSort"
+                        @load-more="loadMore('shipped')"
                     />
                 </div>
             </div>
@@ -100,6 +115,12 @@ function toggleShippedSort() {
     }
 }
 
+function loadMore(statusKey) {
+    const state = store.columns[statusKey]
+    if (!state) return
+    store.fetchColumn(statusKey, state.lastParams, { append: true })
+}
+
 const shippedSortLabel = 'По дате'
 
 watch(selectedOrderId, (id) => {
@@ -108,11 +129,3 @@ watch(selectedOrderId, (id) => {
     }
 }, { immediate: true })
 </script>
-
-<style scoped>
-.columns-wrap--loading {
-    opacity: 0.5;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-</style>
